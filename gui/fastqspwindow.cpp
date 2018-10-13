@@ -4,6 +4,8 @@
 #include <QIcon>
 #include <QSettings>
 
+#define ENGINE_VERSION QString("v-mod-0.5.2")
+
 FastQSPWindow::FastQSPWindow(QWidget *parent)
     : QMainWindow(parent), gameWidth(800), gameHeight(600),
       aspectRatio(qreal(gameWidth) / qreal(gameHeight)), scaleFactor(1),
@@ -217,12 +219,15 @@ void FastQSPWindow::toggleFullscreen() {
 void FastQSPWindow::about() {
   QLabel *about = new QLabel;
   about->setText(
-      "<h2>FastQSP player " % QCoreApplication::applicationVersion() %
-      "</h2><table><tr><td>Author:</td> "
-      "<td>Graylor[graylor@yandex.ru]</td></tr><tr><td>Page:</td> <td><a "
-      "href='https://github.com/graylor/FastQSP'>https://github.com/graylor/"
-      "FastQSP</a></td></tr><tr><td>License:</td> <td>GPL v3</td></tr>");
-  about->setFixedSize(300, 90);
+     // "<h2 style =  \"margin-bottom:0px\">FastQSP player " % QCoreApplication::applicationVersion() %
+      "<h2 style =  \"margin-bottom:0px\">FastQSP player " % ENGINE_VERSION %
+      "</h2><p style = \"margin-top:0px\">"
+      "<br>Author of original engine: Graylor[graylor@yandex.ru]</br>"
+      "<br>Page of original engine: <a href='https://github.com/graylor/FastQSP'>https://github.com/graylor/FastQSP</a></br>"
+      "<br>Page of modified engine(throw): <a href='https://github.com/ItalianSunglassMovie/FastQSP'>https://github.com/ItalianSunglassMovie/FastQSP</a></br>"
+      "<br>Page of modified engine(fork of previous): <a href='https://github.com/Ivanowich/FastQSP/'>https://github.com/Ivanowich/FastQSP/</a></br>"
+      "<br>License: GPL v3</br></p>");
+  about->setFixedSize(500, 100);
   about->show();
 }
 
