@@ -1,6 +1,9 @@
 TEMPLATE = subdirs
 
+QMAKE_CXXFLAGS += /O2 /GL
+QMAKE_CFLAGS += /O2 /GL
+QMAKE_LFLAGS_WINDOWS = /OPT:REF,ICF /LTCG
+
 CONFIG += ordered
 
-SUBDIRS += oniguruma
 SUBDIRS += qsp gui

@@ -5,7 +5,10 @@ win32 {
     DEFINES+= _WIN
 } 
 
-#QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+QMAKE_CXXFLAGS += /O2 /GL
+QMAKE_CFLAGS += /O2 /GL
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01 /OPT:REF,ICF /LTCG
+
 CONFIG += c++11
 
 DEFINES += NOT_RUBY EXPORT _UNICODE _CRT_SECURE_NO_WARNINGS JACKQSP_LIBRARY
@@ -22,10 +25,9 @@ DESTDIR = $$BUILDDIR/bin
 OBJECTS_DIR = $$BUILDDIR/obj/qsp
 MOC_DIR = $$BUILDDIR/moc/qsp
 
-LIBS += -L$$DESTDIR -loniguruma
+LIBS += -L$$DESTDIR -lonig
 
 # Input
-INCLUDEPATH += . ../oniguruma
 HEADERS += actions.h \
            callbacks.h \
            codetools.h \

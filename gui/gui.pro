@@ -1,9 +1,12 @@
 QT += core gui webkit webkitwidgets network
 
+QMAKE_CXXFLAGS += /O2 /GL
+QMAKE_CFLAGS += /O2 /GL
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia multimediawidgets
 else: QT += phonon
 
-#QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01 /OPT:REF,ICF /LTCG
 CONFIG += c++11
 
 TARGET = jack
@@ -45,4 +48,4 @@ MOC_DIR = $$BUILDDIR/moc/gui
 
 INCLUDEPATH += $$PWD/../qsp
 DEPENDPATH += $$PWD/../qsp
-LIBS += -L$$DESTDIR -lqsp -loniguruma
+LIBS += -L$$DESTDIR -lqsp -lonig
