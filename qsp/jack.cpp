@@ -114,8 +114,8 @@ void Jack::setStringVariable(QString key, int array_indice, QString value)
   int name_length = key.length();
   int val_length = value.length();
 
-  QSP_CHAR var_name[name_length + 1];
-  QSP_CHAR qsp_value[val_length + 1];
+  QSP_CHAR *var_name = new QSP_CHAR[name_length + 1];
+  QSP_CHAR *qsp_value = new QSP_CHAR[val_length + 1];
 
   key.toWCharArray(var_name);
   value.toWCharArray(qsp_value);
@@ -131,32 +131,40 @@ void Jack::setStringVariable(QString key, int array_indice, QString value)
 //  qDebug() << "Key:" << key << "value:" << value << "indice:" << array_indice;
 
   qspSetVarValueByReference(var, array_indice, &val);
+
+  delete [] var_name;
+  delete [] qsp_value;
 }
 
 void Jack::setStringVariable(QString key, QString value)
 {
-  QSP_CHAR var_name[key.length() + 1];
+  QSP_CHAR *var_name = new QSP_CHAR[key.length() + 1];
 
   key.toWCharArray(var_name);
 
   var_name[key.length()] = L'\0';
 
-  QSP_CHAR var_val[value.length() + 1];
+  QSP_CHAR *var_val = new QSP_CHAR[value.length() + 1];
+
   value.toWCharArray(var_val);
 
   var_val[value.length()] = L'\0';
+
 
   QSPVariant variant = qspGetEmptyVariant(QSP_TRUE); // True = string type
   QSP_STR(variant) = var_val;
 
   qspSetVar(var_name, &variant, '=');
+
+  delete [] var_name;
+  delete [] var_val;
 }
 
 void Jack::setNumericVariable(QString key, int array_indice, int value)
 {
   int name_length = key.length();
 
-  QSP_CHAR var_name[name_length + 1];
+  QSP_CHAR *var_name = new QSP_CHAR[name_length + 1];
 
   key.toWCharArray(var_name);
 
@@ -171,27 +179,34 @@ void Jack::setNumericVariable(QString key, int array_indice, int value)
 
   qspSetVarValueByReference(var, array_indice, &val);
 
+
+  delete [] var_name;
 }
 
 void Jack::setNumericVariable(QString key, int value)
 {
-  QSP_CHAR var_name[key.length() + 1];
+  QSP_CHAR *var_name = new QSP_CHAR[key.length() + 1];
 
   key.toWCharArray(var_name);
   var_name[key.length()] = L'\0';
+
 
   QSPVariant variant = qspGetEmptyVariant(QSP_FALSE); //False = not string type
   QSP_NUM(variant) = value;
 
   qspSetVar(var_name, &variant, '=');
+
+  delete [] var_name;
 }
 
 void Jack::executeLocation(QString location)
 {
-  QSP_CHAR loc_name[location.length() + 1];
+  QSP_CHAR *loc_name = new QSP_CHAR[location.length() + 1];
   location.toWCharArray(loc_name);
   loc_name[location.length()] = L'\0';
   qspExecLocByName(loc_name, true);
+
+  delete [] loc_name;
 }
 
 // When loading a game, before switching to the right location
@@ -301,7 +316,8 @@ void Jack::loadGameStatus(QString filename)
   if(qloc == "main_screen")
     qloc = "menu_form";
 
-  QSP_CHAR myloc[qloc.length() + 1];
+  QSP_CHAR *myloc = new QSP_CHAR[qloc.length() + 1];
+
   qloc.toWCharArray(myloc);
   myloc[qloc.length()] = L'\0';
 
@@ -317,6 +333,8 @@ void Jack::loadGameStatus(QString filename)
 
   setNumericVariable("sp_txt_is_set_from_save", 0);
   setNumericVariable("txt_is_set_from_save", 0);
+
+  delete [] myloc;
 }
 
 void Jack::saveGameStatus(QString filename)
@@ -340,11 +358,12 @@ void Jack::saveGameStatus(QString filename)
     if (key.right(9) == "_is_array")
       is_array = true;
 
-    QSP_CHAR var_name[entry.length() + 1];
+    QSP_CHAR *var_name = new QSP_CHAR[entry.length() + 1];
 
     entry.toWCharArray(var_name);
 
     var_name[entry.length()] = L'\0';
+
 
     if(is_array) // save all array indices
     {
@@ -370,6 +389,7 @@ void Jack::saveGameStatus(QString filename)
       else
         obj[entry] = QString::fromWCharArray(var_data.Val.Str);
     }
+    delete [] var_name;
   }
 
   QFile saveFile(filename);
@@ -381,7 +401,6 @@ void Jack::saveGameStatus(QString filename)
   QJsonDocument doc(obj);
   saveFile.write(doc.toJson());
   saveFile.close();
-
 }
 
 QJsonObject Jack::loadJSONObjFromFile(QString filename)
