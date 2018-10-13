@@ -3,6 +3,7 @@
 
 #include <QtCore/QtGlobal>
 #define JACKQSP_EXPORT Q_DECL_EXPORT
+#define JACKQSP_EXPORT2
 
 #include <QString>
 #include <QJsonDocument>
@@ -15,16 +16,16 @@
 class JACKQSP_EXPORT Jack
 {
 public:
-  JACKQSP_EXPORT static Jack& getInstance();
+  JACKQSP_EXPORT2 static Jack& getInstance();
 
   void executeJSON();
   QList<QString> getImageArrays(QString key);
-  JACKQSP_EXPORT int qspCurrentObjectsCount();
-  JACKQSP_EXPORT bool isGotoMainScreenAcceptable();
+  JACKQSP_EXPORT2 int qspCurrentObjectsCount();
+  JACKQSP_EXPORT2 bool isGotoMainScreenAcceptable();
 
 public slots:
-  JACKQSP_EXPORT void saveGameStatus(QString filename);
-  JACKQSP_EXPORT void loadGameStatus(QString filename);
+  JACKQSP_EXPORT2 void saveGameStatus(QString filename);
+  JACKQSP_EXPORT2 void loadGameStatus(QString filename);
 
 private:
   Jack() { qDebug() << "success";}

@@ -49,6 +49,6 @@ QSP_CHAR *qspGetAllActionsAsCode();
 /* Statements */
 void qspStatementSinglelineAddAct(QSPLineOfCode *, int, int);
 void qspStatementMultilineAddAct(QSPLineOfCode *, int, int, QSP_BOOL);
-QSP_BOOL qspStatementDelAct(QSPVariant *, int, QSP_CHAR **, int);
+QSP_BOOL qspStatementDelAct(QSPVariant*, int p1, wchar_t** p2, int p3);
 
 #endif

@@ -225,8 +225,7 @@ void qspStatementMultilineAddAct(QSPLineOfCode *s, int endLine, int lineInd,
   qspFreeVariants(args, count);
 }
 
-QSP_BOOL qspStatementDelAct(QSPVariant *args, int count, QSP_CHAR **jumpTo,
-                            int extArg) {
+QSP_BOOL qspStatementDelAct(QSPVariant *args, int p1, wchar_t** p2, int p3) {
   int actInd = qspActIndex(QSP_STR(args[0]));
   if (actInd < 0)
     return QSP_FALSE;
