@@ -4,7 +4,7 @@
 #include <QIcon>
 #include <QSettings>
 
-#define ENGINE_VERSION QString("v-mod-0.5.2")
+#define ENGINE_VERSION QString("mod-v0.5.2")
 
 FastQSPWindow::FastQSPWindow(QWidget *parent)
     : QMainWindow(parent), gameWidth(800), gameHeight(600),
