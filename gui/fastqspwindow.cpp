@@ -10,7 +10,8 @@ FastQSPWindow::FastQSPWindow(QWidget *parent)
     : QMainWindow(parent), gameWidth(800), gameHeight(600),
       aspectRatio(qreal(gameWidth) / qreal(gameHeight)), scaleFactor(1),
       gameIsOpen(false), netManager(),
-      settings (QSettings::IniFormat, QSettings::UserScope, "FastQSP", "config")
+      settings ("FastQSP.ini", QSettings::IniFormat)
+      //settings (QSettings::IniFormat, QSettings::UserScope, "FastQSP", "config")
 {
 // Init audio
 #if QT_VERSION < 0x050000
@@ -132,10 +133,10 @@ FastQSPWindow::FastQSPWindow(QWidget *parent)
   gameMenu->addAction(ignoreCRCAction);
 
   // TODO: slows the game, move saving to diffrent thread
-  autosaveAction = new QAction("Autosave", this);
+  autosaveAction = new QAction("Autosave when exiting", this);
   autosaveAction->setCheckable(true);
-  autosaveAction->setChecked(false);
-  // gameMenu->addAction(autosave);
+  autosaveAction->setChecked(settings.value("AutosaveWhenExiting", false).toBool());
+  gameMenu->addAction(autosaveAction);
 
   menuBar()->addMenu(gameMenu);
   gameMenu->setDisabled(true);
