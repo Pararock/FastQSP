@@ -132,10 +132,11 @@ FastQSPWindow::FastQSPWindow(QWidget *parent)
   connect(ignoreCRCAction, SIGNAL(toggled(bool)), this, SLOT(saveIgnoreCRCState()));
   gameMenu->addAction(ignoreCRCAction);
 
-  // TODO: slows the game, move saving to diffrent thread
+  // Добавляем пункт меню для автоматического сохранения при выходе
   autosaveAction = new QAction("Autosave when exiting", this);
   autosaveAction->setCheckable(true);
   autosaveAction->setChecked(settings.value("AutosaveWhenExiting", false).toBool());
+  connect(autosaveAction, SIGNAL(toggled(bool)), this, SLOT(saveAutosaveWhenExiting()));
   gameMenu->addAction(autosaveAction);
 
   menuBar()->addMenu(gameMenu);
@@ -518,8 +519,8 @@ void FastQSPWindow::loadPage() {
     html.replace(origImage, newImage);
 
   webView->setHtml(html, QUrl("http://qspgame.local"));
-  if (autosaveAction->isChecked())
-    autosave();
+
+  autosave();
 }
 
 // Ugly way of looping a video, but using a playlist
@@ -613,6 +614,11 @@ void FastQSPWindow::maybePlayVideo(QString html, QStringList urlmatches)
   }
 }
 
+void FastQSPWindow::saveAutosaveWhenExiting()
+{
+  settings.setValue("AutosaveWhenExiting", autosaveAction->isChecked());
+}
+
 void FastQSPWindow::saveIgnoreCRCState()
 {
   settings.setValue("ignoreCRC", ignoreCRCAction->isChecked());
@@ -659,7 +665,8 @@ void FastQSPWindow::gotoMainScreen()
 
 void FastQSPWindow::autosave() {
 //  qDebug() << "autosave:" << saveDir.absolutePath() + "/auto.sav";
-  saveGame(saveDir.absolutePath() + "/auto.sav");
+  if (autosaveAction->isChecked())
+    saveGame(saveDir.absolutePath() + "/auto.sav");
 }
 
 void FastQSPWindow::resizeEvent(QResizeEvent * /*event*/) {

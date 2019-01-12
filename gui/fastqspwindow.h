@@ -84,6 +84,7 @@ private slots:
   void toggleUpdate();
   void replayVideo(qint64 pos);
   void saveIgnoreCRCState();
+  void saveAutosaveWhenExiting();
   void saveMutedState(); //Reminder: One more option to be saved: Do proper settings handling!
   void hideSaveStatus();
   void nextScreen();
