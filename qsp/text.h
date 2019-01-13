@@ -16,6 +16,7 @@
 */
 
 #include "declarations.h"
+#include <vector>
 
 #ifndef QSP_TEXTDEFINES
 #define QSP_TEXTDEFINES
@@ -64,6 +65,8 @@ QSP_CHAR *qspStrPos(QSP_CHAR *txt, const QSP_CHAR *str, QSP_BOOL isIsolated);
 QSP_CHAR *qspStrPosPartial(QSP_CHAR *, QSP_CHAR *, const QSP_CHAR*, QSP_BOOL);
 QSP_CHAR *qspReplaceText(QSP_CHAR *, const QSP_CHAR*, const QSP_CHAR*);
 QSP_CHAR *qspFormatText(QSP_CHAR *, QSP_BOOL);
+
+int qspAddText2(std::vector<QSP_CHAR> *dest, const QSP_CHAR *val, int valLen, QSP_BOOL isCreate);
 
 template <typename CharType> void qspFreeStrs(CharType **strs, int count) {
   if (strs) {

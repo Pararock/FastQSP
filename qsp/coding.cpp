@@ -455,3 +455,28 @@ int qspCodeWriteVal(QSP_CHAR **s, int len, const QSP_CHAR *val, QSP_BOOL isCode)
   }
   return qspAddText(s, QSP_STRSDELIM, len, QSP_LEN(QSP_STRSDELIM), QSP_FALSE);
 }
+
+int qspCodeWriteIntVal2(std::vector<QSP_CHAR>  *s, int len, int val, QSP_BOOL isCode) {
+  QSP_CHAR buf[12], *temp;
+  qspNumToStr(buf, val);
+  if (isCode) {
+    temp = qspCodeReCode(buf, QSP_TRUE);
+    len = qspAddText2(s, temp, -1, QSP_FALSE);
+    free(temp);
+  } else
+    len = qspAddText2(s, buf, -1, QSP_FALSE);
+  return qspAddText2(s, QSP_STRSDELIM, QSP_LEN(QSP_STRSDELIM), QSP_FALSE);
+}
+
+int qspCodeWriteVal2(std::vector<QSP_CHAR>  *s, int len, const QSP_CHAR *val, QSP_BOOL isCode) {
+  QSP_CHAR *temp;
+  if (val) {
+    if (isCode) {
+      temp = qspCodeReCode(val, QSP_TRUE);
+      len = qspAddText2(s, temp, -1, QSP_FALSE);
+      free(temp);
+    } else
+      len = qspAddText2(s, val, -1, QSP_FALSE);
+  }
+  return qspAddText2(s, QSP_STRSDELIM, QSP_LEN(QSP_STRSDELIM), QSP_FALSE);
+}

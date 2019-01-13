@@ -22,7 +22,10 @@
 #include "mathops.h"
 #include "variables.h"
 #include "variant.h"
+#include <QtDebug>
+#include <vector>
 
+// Что это за пиздец?! Кто так, блять, пишет? Теперь понятно, откуда тормоза. Срочно переписать.
 int qspAddText(QSP_CHAR **dest, const QSP_CHAR *val, int destLen, int valLen,
                QSP_BOOL isCreate) {
   int ret;
@@ -44,6 +47,24 @@ int qspAddText(QSP_CHAR **dest, const QSP_CHAR *val, int destLen, int valLen,
   qspStrNCopy(destPtr, val, valLen);
   destPtr[valLen] = 0;
   return ret;
+}
+
+// новая версия. Что это костыль - похуй. Главно быстро работает.
+int qspAddText2(std::vector<QSP_CHAR> *dest, const QSP_CHAR *val, int valLen, QSP_BOOL isCreate)
+{
+    if (valLen < 0)
+      valLen = qspStrLen(val);
+    int destLen = dest->size()-1;
+    // Удаляем символ завершения строки
+    if((!dest->empty()) && ((*dest)[destLen] == 0))
+        dest->pop_back();
+    // Добавляем в конец
+    for(int k = 0; k < valLen; k++){
+        dest->push_back(val[k]);
+    }
+    // Добавляем символ завершения строки
+    dest->push_back(0);
+    return dest->size()-1;
 }
 
 QSP_CHAR* qspGetNewText(const QSP_CHAR *val, int valLen) {

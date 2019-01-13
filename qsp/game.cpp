@@ -343,7 +343,7 @@ void qspOpenQuest(QSP_CHAR *fileName, QSP_BOOL isAddLocs) {
   free(buf);
 }
 
-int qspSaveGameStatusToString(QSP_CHAR **buf) {
+int qspSaveGameStatusToStringOld(QSP_CHAR **buf) {
   QSP_CHAR *locName;
   QSPVar *savedVars;
   int i, j, len, varsCount, oldRefreshCount = qspRefreshCount;
@@ -430,6 +430,107 @@ int qspSaveGameStatusToString(QSP_CHAR **buf) {
     }
   qspRestoreLocalVars(savedVars, varsCount, qspSavedVarsGroups,
                       qspSavedVarsGroupsCount);
+  if (qspErrorNum) {
+    free(*buf);
+    return 0;
+  }
+  return len;
+}
+
+int qspSaveGameStatusToString(QSP_CHAR **buf) {
+  QSP_CHAR *locName;
+  QSPVar *savedVars;
+  int i, j, len, varsCount, oldRefreshCount = qspRefreshCount;
+  qspExecLocByVarNameWithArgs(QSP_FMT("ONGSAVE"), nullptr, 0);
+  if (qspRefreshCount != oldRefreshCount || qspErrorNum)
+    return 0;
+  varsCount = qspPrepareLocalVars(&savedVars);
+  if (qspErrorNum)
+    return 0;
+
+  std::vector<QSP_CHAR> *buff = new std::vector<QSP_CHAR>();
+  qspRefreshPlayList();
+  locName = (qspCurLoc >= 0 ? qspLocs[qspCurLoc].Name : nullptr);
+  qDebug() << "Размер" << sizeof(QSP_CHAR);
+  len = qspCodeWriteVal2(buff, 0, QSP_SAVEDGAMEID, QSP_FALSE);
+  len = qspCodeWriteVal2(buff, len, QSP_VER, QSP_FALSE);
+  len = qspCodeWriteIntVal2(buff, len, qspQstCRC, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspGetTime(), QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspCurSelAction, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspCurSelObject, QSP_TRUE);
+  len = qspCodeWriteVal2(buff, len, qspViewPath, QSP_TRUE);
+  len = qspCodeWriteVal2(buff, len, qspCurInput, QSP_TRUE);
+  len = qspCodeWriteVal2(buff, len, qspCurDesc, QSP_TRUE);
+  len = qspCodeWriteVal2(buff, len, qspCurVars, QSP_TRUE);
+  len = qspCodeWriteVal2(buff, len, locName, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, (int)qspCurIsShowActs, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, (int)qspCurIsShowObjs, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, (int)qspCurIsShowVars, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, (int)qspCurIsShowInput, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspTimerInterval, QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspPLFilesCount, QSP_TRUE);
+
+  for (i = 0; i < qspPLFilesCount; ++i)
+    len = qspCodeWriteVal2(buff, len, qspPLFiles[i], QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspCurIncFilesCount, QSP_TRUE);
+  for (i = 0; i < qspCurIncFilesCount; ++i)
+    len = qspCodeWriteVal2(buff, len, qspCurIncFiles[i], QSP_TRUE);
+  len = qspCodeWriteIntVal2(buff, len, qspCurActionsCount, QSP_TRUE);
+  for (i = 0; i < qspCurActionsCount; ++i) {
+    if (qspCurActions[i].Image)
+      len = qspCodeWriteVal2(buff, len, qspCurActions[i].Image + qspQstPathLen,
+                            QSP_TRUE);
+    else
+      len = qspCodeWriteVal2(buff, len, nullptr, QSP_FALSE);
+    len = qspCodeWriteVal2(buff, len, qspCurActions[i].Desc, QSP_TRUE);
+    len = qspCodeWriteIntVal2(buff, len, qspCurActions[i].OnPressLinesCount,
+                             QSP_TRUE);
+    for (j = 0; j < qspCurActions[i].OnPressLinesCount; ++j) {
+      len = qspCodeWriteVal2(buff, len, qspCurActions[i].OnPressLines[j].Str,
+                            QSP_TRUE);
+      len = qspCodeWriteIntVal2(buff, len, qspCurActions[i].OnPressLines[j].LineNum, QSP_TRUE);
+    }
+    len = qspCodeWriteIntVal2(buff, len, qspCurActions[i].Location, QSP_TRUE);
+    len = qspCodeWriteIntVal2(buff, len, qspCurActions[i].ActIndex, QSP_TRUE);
+    len = qspCodeWriteIntVal2(buff, len, qspCurActions[i].StartLine, QSP_TRUE);
+    len = qspCodeWriteIntVal2(buff, len, (int)qspCurActions[i].IsManageLines,
+                             QSP_TRUE);
+  }
+  len = qspCodeWriteIntVal2(buff, len, qspCurObjectsCount, QSP_TRUE);
+  for (i = 0; i < qspCurObjectsCount; ++i) {
+    if (qspCurObjects[i].Image)
+      len = qspCodeWriteVal2(buff, len, qspCurObjects[i].Image + qspQstPathLen,
+                            QSP_TRUE);
+    else
+      len = qspCodeWriteVal2(buff, len, nullptr, QSP_FALSE);
+    len = qspCodeWriteVal2(buff, len, qspCurObjects[i].Desc, QSP_TRUE);
+  }
+
+  len = qspCodeWriteIntVal2(buff, len, qspGetVarsCount(), QSP_TRUE);
+  for (i = 0; i < QSP_VARSCOUNT; ++i)
+    if (qspVars[i].Name) {
+      len = qspCodeWriteIntVal2(buff, len, i, QSP_TRUE);
+      len = qspCodeWriteVal2(buff, len, qspVars[i].Name, QSP_TRUE);
+      len = qspCodeWriteIntVal2(buff, len, qspVars[i].ValsCount, QSP_TRUE);
+      for (j = 0; j < qspVars[i].ValsCount; ++j) {
+        len = qspCodeWriteIntVal2(buff, len, qspVars[i].Values[j].Num, QSP_TRUE);
+        len = qspCodeWriteVal2(buff, len, qspVars[i].Values[j].Str, QSP_TRUE);
+      }
+      len = qspCodeWriteIntVal2(buff, len, qspVars[i].IndsCount, QSP_TRUE);
+      for (j = 0; j < qspVars[i].IndsCount; ++j) {
+        len =
+            qspCodeWriteIntVal2(buff, len, qspVars[i].Indices[j].Index, QSP_TRUE);
+        len = qspCodeWriteVal2(buff, len, qspVars[i].Indices[j].Str, QSP_TRUE);
+      }
+    }
+  qspRestoreLocalVars(savedVars, varsCount, qspSavedVarsGroups,
+                      qspSavedVarsGroupsCount);
+
+  // Это называется "Мне лень переписывать 5 функций"
+  *buf =  (QSP_CHAR*)malloc(buff->size() * sizeof(QSP_CHAR));
+  memcpy(*buf, buff->data(), buff->size() * sizeof(QSP_CHAR));
+  delete buff;
+
   if (qspErrorNum) {
     free(*buf);
     return 0;
