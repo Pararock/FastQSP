@@ -55,7 +55,7 @@ QSP_CHAR *qspStrStr(QSP_CHAR *str, const QSP_CHAR *strSearch);
 const QSP_CHAR* qspStrPBrk(const QSP_CHAR*, const QSP_CHAR*);
 QSP_CHAR *qspInStrRChars(QSP_CHAR *, const QSP_CHAR*, QSP_CHAR *);
 QSP_CHAR *qspJoinStrs(QSP_CHAR **, int, QSP_CHAR *);
-int qspSplitStr(QSP_CHAR *, const QSP_CHAR*, QSP_CHAR ***);
+int qspSplitStr(QSP_CHAR *, const QSP_CHAR*, QSP_CHAR ***, int);
 void qspCopyStrs(QSP_CHAR ***, QSP_CHAR **, int, int);
 QSP_BOOL qspIsNumber(QSP_CHAR *);
 int qspStrToNum(QSP_CHAR *, QSP_BOOL *);

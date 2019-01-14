@@ -284,18 +284,18 @@ QSP_CHAR *qspJoinStrs(QSP_CHAR **s, int count, QSP_CHAR *delim) {
   }
   return txt;
 }
-
-int qspSplitStr(QSP_CHAR *str, const QSP_CHAR *delim, QSP_CHAR ***res) {
-  int allocChars, count = 0, bufSize = 8, delimLen = qspStrLen(delim);
+// последний параметр - предполагаемое число строк
+int qspSplitStr(QSP_CHAR *str, const QSP_CHAR *delim, QSP_CHAR ***res, int strEval) {
+  int allocChars, count = 0, bufSize = strEval, delimLen = qspStrLen(delim);
   QSP_CHAR *newStr, **ret, *curPos = str, *found = qspStrStr(str, delim);
   ret = (QSP_CHAR **)malloc(bufSize * sizeof(QSP_CHAR *));
   while (found) {
     allocChars = (int)(found - curPos);
     newStr = (QSP_CHAR *)malloc((allocChars + 1) * sizeof(QSP_CHAR));
-    qspStrNCopy(newStr, curPos, allocChars);
+    memcpy(newStr, curPos, allocChars * sizeof (QSP_CHAR));
     newStr[allocChars] = 0;
     if (++count > bufSize) {
-      bufSize += 16;
+      bufSize += 1024;
       ret = (QSP_CHAR **)realloc(ret, bufSize * sizeof(QSP_CHAR *));
     }
     ret[count - 1] = newStr;

@@ -649,7 +649,7 @@ AS3_Val QSPOpenSavedGameFromData(void *param, AS3_Val args) {
   AS3_ByteArray_seek(data, 0, SEEK_SET);
   AS3_ByteArray_readBytes(ptr, data, dataSize);
   ptr[dataLen] = 0;
-  qspOpenGameStatusFromString(ptr);
+  qspOpenGameStatusFromString(ptr, dataLen);
   free(ptr);
   if (qspErrorNum)
     return AS3_False();

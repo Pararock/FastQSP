@@ -516,7 +516,7 @@ void QSPOpenSavedGameFromData(QSP_BOOL *res, const void *data, int dataSize,
   ptr = (QSP_CHAR *)malloc((dataLen + 1) * sizeof(QSP_CHAR));
   memcpy(ptr, data, dataSize);
   ptr[dataLen] = 0;
-  qspOpenGameStatusFromString(ptr);
+  qspOpenGameStatusFromString(ptr, dataLen);
   free(ptr);
   if (qspErrorNum) {
     *res = QSP_FALSE;

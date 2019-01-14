@@ -17,6 +17,8 @@
 
 #include "coding.h"
 #include "text.h"
+#include <QtDebug>
+#include <omp.h>
 
 unsigned char qspCP1251ToKOI8RTable[] = {
     0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
@@ -278,9 +280,9 @@ static char qspReverseConvertUC(int ch, int *table) {
   return 0x20;
 }
 
-QSP_CHAR *qspCodeReCode(const QSP_CHAR *str, QSP_BOOL isCode) {
-  int len = qspStrLen(str);
-  QSP_CHAR ch, *buf = (QSP_CHAR *)malloc((len + 1) * sizeof(QSP_CHAR));
+void qspCodeReCodeDoing(const QSP_CHAR *str, QSP_BOOL isCode, QSP_CHAR *buf, int len)
+{
+  QSP_CHAR ch;
   buf[len] = 0;
   if (isCode) {
     while (--len >= 0) {
@@ -301,6 +303,12 @@ QSP_CHAR *qspCodeReCode(const QSP_CHAR *str, QSP_BOOL isCode) {
       buf[len] = ch;
     }
   }
+}
+
+QSP_CHAR *qspCodeReCode(const QSP_CHAR *str, QSP_BOOL isCode) {
+  int len = qspStrLen(str);
+  QSP_CHAR *buf = (QSP_CHAR *)malloc((len + 1) * sizeof(QSP_CHAR));
+  qspCodeReCodeDoing(str, isCode, buf, len);
   return buf;
 }
 
@@ -423,11 +431,11 @@ int qspSplitGameStr(char *str, QSP_BOOL isUCS2, const QSP_CHAR *delim, char ***r
   return count;
 }
 
+QSP_CHAR qspReCodeGetIntValBuf[21];
 int qspReCodeGetIntVal(QSP_CHAR *val) {
   int num;
-  QSP_CHAR *temp = qspCodeReCode(val, QSP_FALSE);
-  num = qspStrToNum(temp, nullptr);
-  free(temp);
+  qspCodeReCodeDoing(val, QSP_FALSE, qspReCodeGetIntValBuf, qspStrLen(val));
+  num = qspStrToNum(qspReCodeGetIntValBuf, nullptr);
   return num;
 }
 

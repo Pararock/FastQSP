@@ -1,6 +1,7 @@
 #include "fastqspwindow.h"
 #include <QApplication>
 #include <QtDebug>
+#include <omp.h>
 
 FastQSPWindow *qspWin;
 
