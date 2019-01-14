@@ -19,7 +19,7 @@
 #ifdef EXPORT
 #undef EXPORT
 #endif
-#include "oniguruma.h"
+#include <oniguruma.h>
 
 #ifndef QSP_REGEXPDEFINES
 #define QSP_REGEXPDEFINES
