@@ -1,4 +1,4 @@
-QT += core gui webkit webkitwidgets network
+QT += core gui webengine webenginewidgets network
 
 QMAKE_CXXFLAGS += /O2 /GL
 QMAKE_CFLAGS += /O2 /GL

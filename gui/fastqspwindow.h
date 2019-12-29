@@ -13,8 +13,8 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QTextEdit>
-#include <QWebView>
-#include <QWebFrame>
+//#include <QWebView>
+//#include <QWebFrame>
 #include <QString>
 #include <QRegExp>
 #include <QDebug>
@@ -23,7 +23,7 @@
 #include <QFontDatabase>
 #include <QLabel>
 #include <QGraphicsScene>
-#include <QGraphicsWebView>
+//#include <QGraphicsWebView>
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QDesktopServices>
@@ -98,7 +98,7 @@ private:
   QAction *autosaveAction;
   QAction *ignoreCRCAction;
   QAction *muteAction;
-  QGraphicsWebView *webView;
+  //QGraphicsWebView *webView;
   QGraphicsView *graphicsView;
   QGraphicsScene *scene;
   QMediaPlayer *videoPlayer ;

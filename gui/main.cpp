@@ -31,7 +31,7 @@ void myMessageHandler(QtMsgType type, const char *msg)
 int main(int argc, char *argv[]) {
 //      qInstallMessageHandler(myMessageOutput);
   QCoreApplication::setApplicationName("FastQSP");
-  QCoreApplication::setApplicationVersion(GIT_VERSION);
+  //QCoreApplication::setApplicationVersion(GIT_VERSION);
 
   QApplication a(argc, argv);
   qspWin = new FastQSPWindow();

@@ -10,8 +10,11 @@
 *.dll
 *.dylib
 build
+Debug
+Release
 
 # Visual studio file
+.vs
 *.sln
 *.vcxproj
 *.suo
@@ -21,6 +24,9 @@ vc*.pdb
 *.sdf
 *.opensdf
 
+# Visual Studio Code
+.vscode
+
 # Qt-es
 
 *.pro.user
@@ -29,3 +35,11 @@ moc_*.cpp
 qrc_*.cpp
 Makefile*
 *-build-*
+
+# CMAKE
+CMakeFiles
+Win32
+install_manifest.txt
+cmake_install.cmake
+CMakeCache.txt
+*_autogen

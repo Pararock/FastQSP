@@ -33,19 +33,19 @@ FastQSPWindow::FastQSPWindow(QWidget *parent)
   graphicsView->setUpdatesEnabled(true);
   graphicsView->setFrameStyle(QFrame::NoFrame);
 
-  webView = new QGraphicsWebView();
-  webView->page()->setNetworkAccessManager(&netManager);
-  webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-  webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-  webView->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-  scene->addItem(webView);
-  scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
-  webView->setRenderHints(
-      QPainter::Antialiasing | QPainter::HighQualityAntialiasing |
-      QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform |
-      QPainter::NonCosmeticDefaultPen);
-  webView->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
-  webView->setAutoFillBackground(false);
+  // webView = new QGraphicsWebView();
+  // webView->page()->setNetworkAccessManager(&netManager);
+  // webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+  // webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+  // webView->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+  // scene->addItem(webView);
+  // scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
+  // webView->setRenderHints(
+  //     QPainter::Antialiasing | QPainter::HighQualityAntialiasing |
+  //     QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform |
+  //     QPainter::NonCosmeticDefaultPen);
+  // webView->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
+  // webView->setAutoFillBackground(false);
 
   videoPlayer = new QMediaPlayer();
   videoItem = new QGraphicsVideoItem();
@@ -164,12 +164,12 @@ FastQSPWindow::FastQSPWindow(QWidget *parent)
   menuBar()->addMenu(helpMenu);
   //------------------------------------------------------------------
 
-  connect(webView, SIGNAL(linkClicked(const QUrl &)),
-          SLOT(linkClicked(const QUrl &)), Qt::DirectConnection);
-  connect(webView, SIGNAL(loadFinished(bool)), SLOT(toggleUpdate()),
-          Qt::DirectConnection);
-  connect(webView, SIGNAL(loadStarted()), SLOT(toggleUpdate()),
-          Qt::DirectConnection);
+  // connect(webView, SIGNAL(linkClicked(const QUrl &)),
+  //         SLOT(linkClicked(const QUrl &)), Qt::DirectConnection);
+  // connect(webView, SIGNAL(loadFinished(bool)), SLOT(toggleUpdate()),
+  //         Qt::DirectConnection);
+  // connect(webView, SIGNAL(loadStarted()), SLOT(toggleUpdate()),
+  //         Qt::DirectConnection);
 
   setCentralWidget(graphicsView);
 
@@ -329,7 +329,7 @@ void FastQSPWindow::showHtml() {
   static QTextEdit *htmlText;
   if (!htmlText)
     htmlText = new QTextEdit();
-  htmlText->setPlainText(webView->page()->mainFrame()->toHtml());
+  //htmlText->setPlainText(webView->page()->mainFrame()->toHtml());
   htmlText->show();
 }
 
@@ -487,7 +487,7 @@ void FastQSPWindow::openFile(const QString &filename) {
     }
     aspectRatio = qreal(gameWidth) / qreal(gameHeight);
     loadPage();
-    webView->resize(gameWidth, gameHeight);
+    //webView->resize(gameWidth, gameHeight);
     resize(gameWidth, gameHeight);
     gameIsOpen = true;
     saveDir = gameDirectory + "save/";
@@ -518,7 +518,7 @@ void FastQSPWindow::loadPage() {
   if(newImage != "")
     html.replace(origImage, newImage);
 
-  webView->setHtml(html, QUrl("http://qspgame.local"));
+  //webView->setHtml(html, QUrl("http://qspgame.local"));
 
   autosave();
 }
