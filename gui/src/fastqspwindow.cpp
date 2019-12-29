@@ -1,5 +1,5 @@
 #include "qsp_callback.h"
-#include "qsp_default.h"
+#include <qsp/default/qsp_default.h>
 #include "fastqspwindow.h"
 #include <QIcon>
 #include <QSettings>

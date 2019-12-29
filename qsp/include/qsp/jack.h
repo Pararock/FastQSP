@@ -10,7 +10,6 @@
 #include <QJsonObject>
 #include <QMap>
 #include <QList>
-#include "common.h"
 #include <QDebug>
 
 class JACKQSP_EXPORT Jack

@@ -10,25 +10,23 @@ endif()
 
 project(FastQsp CXX)
 set(SOURCES
-    main.cpp
-    qsp_callback.cpp
-    fastqspwindow.cpp
-    qsp_htmlbuilder.cpp
-    local_requsts_proxy.cpp
-    audiostream.cpp
+    src/main.cpp
+    src/qsp_callback.cpp
+    src/fastqspwindow.cpp
+    src/qsp_htmlbuilder.cpp
+    src/local_requsts_proxy.cpp
+    src/audiostream.cpp
     #QspExecWebEngineUrlSchemeHandler.cpp
     #QspWebEngineUrlRequestInterceptor.cpp
     #QspWebEngineUrlSchemeHandler.cpp
 )
 
 set(HEADERS
-    qsp.h
-    qsp_callback.h
-    qsp_default.h
-    fastqspwindow.h
-    qsp_htmlbuilder.h
-    local_requsts_proxy.h
-    audiostream.h
+    src/qsp_callback.h
+    src/fastqspwindow.h
+    src/qsp_htmlbuilder.h
+    src/local_requsts_proxy.h
+    src/audiostream.h
     #QspExecWebEngineUrlSchemeHandler.cpp
     #QspWebEngineUrlRequestInterceptor.cpp
     #QspWebEngineUrlSchemeHandler.cpp
@@ -40,8 +38,6 @@ if (WIN32)
 endif(WIN32)
 set(INCLUDES
     ${PROJECT_SOURCE_DIR}
-    #todo figure out export .h with library cmake
-    ${CMAKE_SOURCE_DIR}/qsp
 )
 set(LIBRARIES qsp)
 

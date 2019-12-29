@@ -6,6 +6,7 @@
 #include <QJsonArray>
 
 #include "locations.h"
+#include "common.h"
 #include "variables.h"
 #include "qsp/jack.h"
 #include "game.h"

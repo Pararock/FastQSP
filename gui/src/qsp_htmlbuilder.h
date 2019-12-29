@@ -1,7 +1,7 @@
 #ifndef QSP_HTMLBUILDER_H
 #define QSP_HTMLBUILDER_H
 
-#include "qsp_default.h"
+#include <qsp/default/qsp_default.h>
 
 #include <QStringBuilder>
 #include <QString>

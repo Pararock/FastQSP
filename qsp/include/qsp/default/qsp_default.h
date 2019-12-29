@@ -64,18 +64,27 @@ QSP_EXTERN int QSPGetSelObjectIndex();
 QSP_EXTERN QSP_BOOL QSPIsObjectsChanged();
 QSP_EXTERN void QSPShowWindow(int type, QSP_BOOL isShow);
 QSP_EXTERN QSP_BOOL QSPGetVarValuesCount(const QSP_CHAR *name, int *count);
+// name can be: "DISABLESCROLL" "NOSAVE" "USEHTML" "BACKIMAGE" "BCOLOR" "FCOLOR"
+// "LCOLOR" "FSIZE" "FNAME" "STYLESHEET"
 QSP_EXTERN QSP_BOOL QSPGetVarValues(const QSP_CHAR *name, int ind, int *numVal,
                                     QSP_CHAR **strVal);
 QSP_EXTERN int QSPGetMaxVarsCount();
 QSP_EXTERN QSP_BOOL QSPGetVarNameByIndex(int ind, QSP_CHAR **name);
+// if link has EXEC: section
 QSP_EXTERN QSP_BOOL QSPExecString(const QSP_CHAR *str, QSP_BOOL isRefresh);
+// update by timer
 QSP_EXTERN QSP_BOOL QSPExecCounter(QSP_BOOL isRefresh);
+// after entering text
 QSP_EXTERN QSP_BOOL QSPExecUserInput(QSP_BOOL isRefresh);
+//??? never used
 QSP_EXTERN QSP_BOOL
     QSPExecLocationCode(const QSP_CHAR *name, QSP_BOOL isRefresh);
+// for error message output
 QSP_EXTERN void QSPGetLastErrorData(int *errorNum, QSP_CHAR **errorLoc,
                                     int *errorActIndex, int *errorLine);
 QSP_EXTERN const QSP_CHAR *QSPGetErrorDesc(int errorNum);
+//?? move to const?
+//QSP_EXTERN QSP_BOOL QSPLoadGameWorld(const QSP_CHAR *file, const QString *gameDirectory);
 QSP_EXTERN QSP_BOOL QSPLoadGameWorld(const QSP_CHAR *file, QString *gameDirectory);
 QSP_EXTERN QSP_BOOL QSPLoadGameWorldFromData(const void *data, int dataSize,
                                              const QSP_CHAR *file);

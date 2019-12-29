@@ -1,7 +1,8 @@
 #ifndef QSPVIEW_H
 #define QSPVIEW_H
 
-#include "qsp_default.h"
+#include <qsp/default/qsp_default.h>
+#include <qsp/jack.h>
 #include "qsp_htmlbuilder.h"
 #include "local_requsts_proxy.h"
 
@@ -41,7 +42,7 @@
 #include <QMap>
 #include "audiostream.h"
 #endif
-#include "jack.h"
+
 
 class FastQSPWindow : public QMainWindow {
   Q_OBJECT

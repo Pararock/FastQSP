@@ -1,7 +1,7 @@
 #ifndef QSPCALLBACK_H
 #define QSPCALLBACK_H
 
-#include "qsp_default.h"
+#include <qsp/default/qsp_default.h>
 #include "fastqspwindow.h"
 
 #include <QInputDialog>
