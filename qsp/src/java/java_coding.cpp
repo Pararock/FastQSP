@@ -1,4 +1,4 @@
-/* Copyright (C) 2005-2010 Valeriy Argunov (nporep AT mail DOT ru) */
+/* Copyright (C) 2010 Ntropy (ntropy AT qsp DOT su) */
 /*
 * This library is free software; you can redistribute it and/or modify
 * it under the terms of the GNU Lesser General Public License as published by
@@ -15,9 +15,9 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "../../declarations.h"
+#include "../declarations.h"
 
-#ifdef _DEFAULT_BINDING
+#ifdef _JAVA
 
 #include "../../text.h"
 

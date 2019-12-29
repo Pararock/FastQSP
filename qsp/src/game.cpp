@@ -30,7 +30,7 @@
 #include "time.h"
 #include "variables.h"
 #include <QDebug>
-#include "jack.h"
+#include "qsp/jack.h"
 
 QSP_CHAR *qspQstPath = nullptr;
 int qspQstPathLen = 0;

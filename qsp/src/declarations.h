@@ -24,8 +24,8 @@
 #include <wchar.h>
 #include <wctype.h>
 
-#include "bindings/bindings_config.h"
-#include "qsp.h"
+#include "qsp/qsp.h"
+#include "qsp/bindings_config.h"
 #include "time_qsp.h"
 
 #ifndef QSP_DEFINES

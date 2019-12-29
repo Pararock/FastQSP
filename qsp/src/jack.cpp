@@ -7,7 +7,7 @@
 
 #include "locations.h"
 #include "variables.h"
-#include "jack.h"
+#include "qsp/jack.h"
 #include "game.h"
 #include "callbacks.h"
 #include "objects.h"

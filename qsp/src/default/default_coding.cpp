@@ -1,4 +1,4 @@
-/* Copyright (C) 2010 Ntropy (ntropy AT qsp DOT su) */
+/* Copyright (C) 2005-2010 Valeriy Argunov (nporep AT mail DOT ru) */
 /*
 * This library is free software; you can redistribute it and/or modify
 * it under the terms of the GNU Lesser General Public License as published by
@@ -15,11 +15,11 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "../../declarations.h"
+#include "../declarations.h"
 
-#ifdef _JAVA
+#ifdef _DEFAULT_BINDING
 
-#include "../../text.h"
+#include "../text.h"
 
 #ifdef _UNICODE
 #define QSP_WCSTOMBSLEN(a) (int) wcstombs(0, a, 0)

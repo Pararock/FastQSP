@@ -15,11 +15,15 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "../../declarations.h"
+#include "../declarations.h"
 
-#ifdef _FLASH
+#ifdef _ANDROID
 
 #include "../../text.h"
+
+#include <jni.h>
+#include <string.h>
+#include <android/log.h>
 
 static int qspUTF8_mbtowc(int *pwc, unsigned char *s, int n) {
   unsigned char c = s[0];
