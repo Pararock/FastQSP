@@ -10,8 +10,6 @@
 *.dll
 *.dylib
 build
-Debug
-Release
 
 # Visual studio file
 .vs
@@ -35,11 +33,3 @@ moc_*.cpp
 qrc_*.cpp
 Makefile*
 *-build-*
-
-# CMAKE
-CMakeFiles
-Win32
-install_manifest.txt
-cmake_install.cmake
-CMakeCache.txt
-*_autogen
