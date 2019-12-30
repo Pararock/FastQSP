@@ -66,9 +66,16 @@ set(HEADERS
     src/variant.h
 )
 
-set(DEFINES NOT_RUBY EXPORT _UNICODE _CRT_SECURE_NO_WARNINGS)
+IF (WIN32)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_definitions(_WIN)
+ELSE()
+    add_compile_definitions(NOT_RUBY)
+ENDIF()
 
-add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_compile_definitions(_UNICODE EXPORT)
+
+add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 
 add_library(FastQsp::qsp ALIAS ${PROJECT_NAME})
 
@@ -86,3 +93,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
 )
+
+install(TARGETS qsp DESTINATION bin/)

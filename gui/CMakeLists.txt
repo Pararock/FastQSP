@@ -33,13 +33,12 @@ set(HEADERS
 )
 
 set(DEFINES NOT_RUBY _UNICODE GIT_VERSION=${GIT_VERSION})
-if (WIN32)
-    list(APPEND DEFINES _WIN)
-endif(WIN32)
+
 set(INCLUDES
     ${PROJECT_SOURCE_DIR}
 )
-set(LIBRARIES qsp)
+
+#set(LIBRARIES qsp)
 
 #find_package(oniguruma CONFIG REQUIRED)
 #target_link_libraries(${PROJECT_NAME} oniguruma)
