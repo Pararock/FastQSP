@@ -15,13 +15,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     //settings (QSettings::IniFormat, QSettings::UserScope, "FastQSP", "config")
 {
     // Init audio
-#if QT_VERSION < 0x050000
-    media = new Phonon::MediaObject(this);
-    audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
-    Phonon::createPath(media, audioOutput);
-#else
     player = new QMediaPlayer();
-#endif
 
     // Start timer
     timer.start();
@@ -245,13 +239,10 @@ void FastQSPWindow::openFileDialog() {
 }
 
 void FastQSPWindow::saveGameDialog() {
-    QString filename = QFileDialog::getSaveFileName(
-        this, "Save Game", saveDir.absolutePath(), "QSP save-game (*.sav)");
-    if (!filename.isEmpty() &&
-        !filename.endsWith(QLatin1String(".sav"), Qt::CaseInsensitive))
+    QString filename = QFileDialog::getSaveFileName(this, "Save Game", saveDir.absolutePath(), "QSP save-game (*.sav)");
+    if (!filename.isEmpty() && !filename.endsWith(QLatin1String(".sav"), Qt::CaseInsensitive))
         filename += QLatin1String(".sav");
-    // New save system
-    //  qspJack->saveGameStatus(filename);
+
     saveGame(filename);
 }
 
@@ -282,9 +273,6 @@ void FastQSPWindow::reloadQSP()
 void FastQSPWindow::loadGame(const QString& filename) {
     //  qDebug() << "Loading game from" << filename;
       //builder.clear();
-    // New save/load system
-    //  qspJack->loadGameStatus(filename);
-    //  loadPage();
     if (!filename.isEmpty())
     {
         if (QSPOpenSavedGame(filename.toStdWString().c_str(), true, ignoreCRCAction->isChecked())) {
@@ -300,7 +288,6 @@ void FastQSPWindow::quicksave()
 {
     QString filename = gameDirectory + "save/quicksave.sav";
     QSPSaveGame(filename.toStdWString().c_str(), true);
-    //  qspJack.saveGameStatus(gameDirectory + "save/quicksave.json"); // New save system
     savestatus->setPlainText("Game is saved.");
     savestatus->setVisible(true);
     QTimer::singleShot(1000, this, SLOT(hideSaveStatus()));
@@ -313,24 +300,18 @@ void FastQSPWindow::quickload()
     savestatus->setPlainText("Loading game...");
     savestatus->setVisible(true);
     QTimer::singleShot(0, this, SLOT(startQuickloading()));
-    // QGraphicsTextItem::setv
-      //qspJack->loadGameStatus(gameDirectory + "save/quicksave.sav");
 }
 
 void FastQSPWindow::startQuickloading()
 {
-    //builder.clear();
     QString filename = gameDirectory + "save/quicksave.sav";
     QSPOpenSavedGame(filename.toStdWString().c_str(), true, ignoreCRCAction->isChecked());
-    // New save system
-    //  qspJack.loadGameStatus(gameDirectory + "save/quicksave.json");
     loadPage();
     savestatus->setVisible(false);
 }
 
 void FastQSPWindow::restartGame() {
     QSPRestartGame(true);
-    //builder.clear();
     loadPage();
 }
 
@@ -417,15 +398,7 @@ void FastQSPWindow::playAudio(QString filename, int vol, QString flags) {
         return;
     }
     filename = filename.replace('\\', '/');
-#if QT_VERSION < 0x050000
-    if (QFile(filename).exists() && media->state() != Phonon::PlayingState) {
-        qDebug() << "playing:" << QFileInfo(filename).filePath() << vol;
-        audioOutput->setVolume(qreal(vol) / qreal(100));
-        media->setCurrentSource(
-            QUrl::fromLocalFile(QFileInfo(filename).filePath()));
-        media->play();
-    }
-#else
+
     if (QFile(filename).exists())
     {
         if (audio[filename] == NULL || audio[filename]->state() != QMediaPlayer::PlayingState)
@@ -447,13 +420,9 @@ void FastQSPWindow::playAudio(QString filename, int vol, QString flags) {
         }
 
     }
-#endif
 }
 
 void FastQSPWindow::stopAudio(QString filename) {
-#if QT_VERSION < 0x050000
-    media->stop();
-#else
     if (filename == NULL)
     {
         for (AudioStream* x : audio)
@@ -466,12 +435,11 @@ void FastQSPWindow::stopAudio(QString filename) {
     {
         audio[filename]->stop();
     }
-#endif
 }
 
 void FastQSPWindow::openFile(const QString& filename) {
     qspFilePath = filename;
-    //builder.clear();
+
     if (gameIsOpen)
         autosave();
     gameDirectory = QFileInfo(filename).absolutePath() + "/";

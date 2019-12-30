@@ -46,44 +46,25 @@ set(INCLUDES
 # Qt stuff
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5 COMPONENTS Core Gui Network Widgets Multimedia MultimediaWidgets WebEngine WebEngineWidgets)# WebKit WebKitWidgets)
-if (Qt5_FOUND)
-    message(STATUS "Using Qt5")
-    list(APPEND INCLUDES
-        ${Qt5Core_INCLUDE_DIRS}
-        #${Qt5Gui_INCLUDE_DIRS}
-        #${Qt5Network_INCLUDE_DIRS}
-        #${Qt5Multimedia_INCLUDE_DIRS}
-        #${Qt5WebKit_INCLUDE_DIRS}
-        #${Qt5WebKitWidgets_INCLUDE_DIRS}
-    )
-    list(APPEND LIBRARIES
-        ${Qt5Core_LIBRARIES}
-        #${Qt5Gui_LIBRARIES}
-        #${Qt5Network_LIBRARIES}
-        #${Qt5Multimedia_LIBRARIES}
-        #${Qt5WebKit_LIBRARIES}
-        #${Qt5WebKitWidgets_LIBRARIES}
-    )
-    list(REMOVE_DUPLICATES INCLUDES)
-    list(REMOVE_DUPLICATES LIBRARIES)
-else()
-    message(STATUS "Qt5 is not found fallback to Qt4")
-    find_package(Qt4 COMPONENTS QtCore QtGui QtNetwork QtWebKit REQUIRED)
-    find_package(Phonon REQUIRED)
-    list(APPEND INCLUDES
-        ${QT_INCLUDES}
-        ${PHONON_INCLUDES}
-    )
-    list(APPEND LIBRARIES
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTGUI_LIBRARY}
-        ${QT_QTNETWORK_LIBRARY}
-        ${QT_QTWEBKIT_LIBRARY}
-        ${PHONON_LIBRARIES}
-    )
-    list(REMOVE_DUPLICATES INCLUDES)
-    list(REMOVE_DUPLICATES LIBRARIES)
-endif(Qt5_FOUND)
+list(APPEND INCLUDES
+    ${Qt5Core_INCLUDE_DIRS}
+    #${Qt5Gui_INCLUDE_DIRS}
+    #${Qt5Network_INCLUDE_DIRS}
+    #${Qt5Multimedia_INCLUDE_DIRS}
+    #${Qt5WebKit_INCLUDE_DIRS}
+    #${Qt5WebKitWidgets_INCLUDE_DIRS}
+)
+list(APPEND LIBRARIES
+    ${Qt5Core_LIBRARIES}
+    #${Qt5Gui_LIBRARIES}
+    #${Qt5Network_LIBRARIES}
+    #${Qt5Multimedia_LIBRARIES}
+    #${Qt5WebKit_LIBRARIES}
+    #${Qt5WebKitWidgets_LIBRARIES}
+)
+list(REMOVE_DUPLICATES INCLUDES)
+list(REMOVE_DUPLICATES LIBRARIES)
+
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES

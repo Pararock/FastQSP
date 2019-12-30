@@ -23,8 +23,6 @@ public:
   JACKQSP_EXPORT2 bool isGotoMainScreenAcceptable();
 
 public slots:
-  JACKQSP_EXPORT2 void saveGameStatus(QString filename);
-  JACKQSP_EXPORT2 void loadGameStatus(QString filename);
 
 private:
   Jack() { qDebug() << "success";}
@@ -36,8 +34,6 @@ private:
   void setStringVariable(QString key, QString value);
   void setNumericVariable(QString key, int array_indice, int value);
   void setNumericVariable(QString key, int value);
-  void executeLocation(QString location);
-  void prepareLocations(QString current_location, int interaction_city);
   void setStylesheet();
   QJsonObject loadJSONObjFromFile(QString filename);
   QMap<QString, QList<QString>> image_arrays;

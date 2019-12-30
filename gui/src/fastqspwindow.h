@@ -14,8 +14,6 @@
 #include <QFileDialog>
 #include <QTextEdit>
 #include <QWebEngineView>
-//#include <QWebView>
-//#include <QWebFrame>
 #include <QString>
 #include <QRegExp>
 #include <QDebug>
@@ -24,7 +22,6 @@
 #include <QFontDatabase>
 #include <QLabel>
 #include <QGraphicsScene>
-//#include <QGraphicsWebView>
 #include <QGraphicsView>
 #include <QShortcut>
 #include <QDesktopServices>
@@ -33,15 +30,12 @@
 #include <QTimer>
 #include <QGraphicsTextItem>
 
-#if QT_VERSION < 0x050000
-#include <Phonon/MediaObject>
-#include <Phonon/AudioOutput>
-#else
+
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QMap>
 #include "audiostream.h"
-#endif
+
 #include <src\url_schemes.h>
 
 class FastQSPWindow : public QMainWindow {
@@ -98,7 +92,6 @@ private:
   QAction *autosaveAction;
   QAction *ignoreCRCAction;
   QAction *muteAction;
-  //QGraphicsWebView *webView;
   QWebEngineView *webView;
   QGraphicsView *graphicsView;
   QGraphicsScene *scene;
@@ -120,13 +113,9 @@ private:
   QString qspFilePath = "";
   QString origImage, newImage; //newImage contains a randomly chosen image,
                                //from a given JSON array. Is set from choseRandomImageFromArray.
-#if QT_VERSION < 0x050000
-  Phonon::MediaObject *media;
-  Phonon::AudioOutput *audioOutput;
-#else
+
   QMediaPlayer *player;
   QMap<QString, AudioStream*> audio;
-#endif
   QTime timer;
   QDir saveDir;
   void loadFonts();
