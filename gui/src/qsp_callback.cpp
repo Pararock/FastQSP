@@ -83,7 +83,7 @@ void QSPCallback::showMenu() { };//qDebug() << "showMenu()"; }
 
 void QSPCallback::showMessage(const QSP_CHAR *str) {
   qDebug() << "showMessage(), str: " << QString::fromWCharArray(str);
-  qspWin->builder.showMessage(QString::fromWCharArray(str));
+  //qspWin->builder.showMessage(QString::fromWCharArray(str));
 }
 
 void QSPCallback::refreshInt(QSP_BOOL isRedraw) {

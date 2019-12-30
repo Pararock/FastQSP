@@ -14,6 +14,7 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QTextEdit>
+#include <QWebEngineView>
 //#include <QWebView>
 //#include <QWebFrame>
 #include <QString>
@@ -42,7 +43,7 @@
 #include <QMap>
 #include "audiostream.h"
 #endif
-
+#include <src\url_schemes.h>
 
 class FastQSPWindow : public QMainWindow {
   Q_OBJECT
@@ -54,7 +55,6 @@ public:
   void stopAudio(QString filename);
   void refreshView();
   int getTimeFromStart();
-  QSP_HTMLBuilder builder;
 
 signals:
 
@@ -100,10 +100,12 @@ private:
   QAction *ignoreCRCAction;
   QAction *muteAction;
   //QGraphicsWebView *webView;
+  QWebEngineView *webView;
   QGraphicsView *graphicsView;
   QGraphicsScene *scene;
   QMediaPlayer *videoPlayer ;
   QGraphicsVideoItem *videoItem;
+  RequestHandlers requestHandlers;
   QString gameDirectory;
   uint gameWidth;
   uint gameHeight;

@@ -3,19 +3,25 @@
 #include <QtDebug>
 #include <omp.h>
 
-FastQSPWindow *qspWin;
+#include <QtWebEngine>
+#include "url_schemes.h"
 
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+#define STRINGIZE_(x) #x
+#define STRINGIZE(x) STRINGIZE_(x)
+
+FastQSPWindow* qspWin;
+
+void myMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     if (type == QtDebugMsg)
     {
-      QFile outFile("log");
-      outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-      QTextStream ts(&outFile);
-      ts << msg << endl;
+        QFile outFile("log");
+        outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream ts(&outFile);
+        ts << msg << endl;
     }
 }
-void myMessageHandler(QtMsgType type, const char *msg)
+void myMessageHandler(QtMsgType type, const char* msg)
 {
     QString txt;
     if (type == QtDebugMsg)
@@ -28,19 +34,29 @@ void myMessageHandler(QtMsgType type, const char *msg)
     ts << txt << endl;
 }
 
-int main(int argc, char *argv[]) {
-//      qInstallMessageHandler(myMessageOutput);
-  QCoreApplication::setApplicationName("FastQSP");
-  //QCoreApplication::setApplicationVersion(GIT_VERSION);
+int main(int argc, char* argv[]) {
+    //      qInstallMessageHandler(myMessageOutput);
+    QCoreApplication::setApplicationName("FastQSP");
+    QCoreApplication::setApplicationVersion(STRINGIZE(GIT_VERSION));
 
-  QApplication a(argc, argv);
-  qspWin = new FastQSPWindow();
-  qspWin->resize(975, 630);
+    
+    RequestHandlers::register_url_schemes();
+    QtWebEngine::initialize();
 
-  qspWin->show();
+    QApplication a(argc, argv);
 
-  if (argc > 1 && QFile(argv[1]).exists())
-    qspWin->openFile(argv[1]);
+    qspWin = new FastQSPWindow();
+    qspWin->resize(975, 630);
 
-  return a.exec();
+    qspWin->show();
+
+    if (argc > 1)
+    {
+        QFile file(argv[1]);
+        if (file.exists()) {
+            qspWin->openFile(file.fileName());
+        }        
+    }
+
+    return a.exec();
 }

@@ -16,9 +16,10 @@ set(SOURCES
     src/qsp_htmlbuilder.cpp
     src/local_requsts_proxy.cpp
     src/audiostream.cpp
-    #QspExecWebEngineUrlSchemeHandler.cpp
-    #QspWebEngineUrlRequestInterceptor.cpp
-    #QspWebEngineUrlSchemeHandler.cpp
+    src/url_schemes.cpp
+    src/QspUrlSchemeHandler.cpp
+    src/ExecUrlSchemeHandler.cpp
+    src/ObjUrlSchemeHandler.cpp
 )
 
 set(HEADERS
@@ -27,9 +28,10 @@ set(HEADERS
     src/qsp_htmlbuilder.h
     src/local_requsts_proxy.h
     src/audiostream.h
-    #QspExecWebEngineUrlSchemeHandler.cpp
-    #QspWebEngineUrlRequestInterceptor.cpp
-    #QspWebEngineUrlSchemeHandler.cpp
+    src/url_schemes.h
+    src/QspUrlSchemeHandler.h
+    src/ExecUrlSchemeHandler.h
+    src/ObjUrlSchemeHandler.h
 )
 
 set(DEFINES NOT_RUBY _UNICODE GIT_VERSION=${GIT_VERSION})
@@ -93,5 +95,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
-target_link_libraries(FastQsp qsp Qt5::Core Qt5::Network Qt5::Widgets  Qt5::Multimedia Qt5::MultimediaWidgets Qt5::WebEngine Qt5::WebEngineWidgets) #Qt5::Gui)
+target_link_libraries(FastQsp qsp Qt5::Core Qt5::WebEngineCore Qt5::Network Qt5::Widgets  Qt5::Multimedia Qt5::MultimediaWidgets Qt5::WebEngine Qt5::WebEngineWidgets) #Qt5::Gui)
 
+install(TARGETS FastQsp DESTINATION bin/)

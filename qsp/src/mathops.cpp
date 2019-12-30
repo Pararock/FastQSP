@@ -31,6 +31,8 @@
 #include <QDebug>
 #include <QFile>
 
+#include <assert.h> 
+
 QSPMathOperation qspOps[qspOpLast_Operation];
 QSPMathOpName qspOpsNames[QSP_OPSLEVELS][QSP_MAXOPSNAMES];
 int qspOpsNamesCounts[QSP_OPSLEVELS];
@@ -51,6 +53,8 @@ static QSPVariant qspValue(int, QSPVariant *, int *, int *);
 static void qspCompileExprPushOpCode(int *, int *, int *, int *, int);
 static void qspAppendToCompiled(int, int *, QSPVariant *, int *, int *, int,
                                 QSPVariant);
+static void qspAppendToCompiledNoOp(int, int*, QSPVariant*, int*, int*, int,
+    QSPVariant);
 static int qspCompileExpression(QSP_CHAR *, QSPVariant *, int *, int *);
 static void qspFunctionStrComp(QSPVariant *, int, QSPVariant *);
 static void qspFunctionStrFind(QSPVariant *, int, QSPVariant *);
@@ -648,8 +652,19 @@ static void qspAppendToCompiled(int opCode, int *itemsCount,
   compOpCodes[*itemsCount] = opCode;
   compArgsCounts[*itemsCount] = argsCount;
   if (opCode == qspOpValue)
-    compValues[*itemsCount] = v;
+  {
+      compValues[*itemsCount] = v;
+  }
   ++(*itemsCount);
+}
+
+static void qspAppendToCompiledNoOp(int opCode, int* itemsCount,
+    QSPVariant* compValues, int* compOpCodes,
+    int* compArgsCounts, int argsCount) {
+
+    assert(opCode != qspOpValue);
+    QSPVariant var{};
+    qspAppendToCompiled(opCode, itemsCount, compValues, compOpCodes, compArgsCounts, argsCount, var);
 }
 
 static int qspCompileExpression(QSP_CHAR *s, QSPVariant *compValues,
@@ -834,8 +849,10 @@ static int qspCompileExpression(QSP_CHAR *s, QSPVariant *compValues,
               if (qspErrorNum)
                 break;
             } else {
-              qspAppendToCompiled(opCode, &itemsCount, compValues, compOpCodes,
-                                  compArgsCounts, 0, v);
+                assert(opCode != qspOpValue);
+                qspAppendToCompiledNoOp(opCode, &itemsCount, compValues, compOpCodes,
+                    compArgsCounts, 0);
+
               if (qspErrorNum)
                 break;
               waitForOperator = QSP_TRUE;
