@@ -25,7 +25,11 @@ void QspUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob* request)
         {
             // This is the path that send back the rendered Main Description in html
             builder.clear();
-            buffer->write(builder.getHTML().toUtf8());
+            QString html = builder.getHTML();
+            if (builder.thereIsAMessage) {
+                qDebug() << "There's a message ";
+            }
+            buffer->write(html.toUtf8());
             buffer->close();
             request->reply("text/html", buffer);
             isFileRequest = false;

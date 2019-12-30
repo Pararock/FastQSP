@@ -131,6 +131,7 @@ private:
   QDir saveDir;
   void loadFonts();
   void loadPage();
+  void displayLastError();
 };
 
 #endif // QSPVIEW_H

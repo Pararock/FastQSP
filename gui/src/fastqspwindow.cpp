@@ -3,6 +3,7 @@
 #include "fastqspwindow.h"
 #include <QIcon>
 #include <QSettings>
+#include <QMessageBox>
 
 #define ENGINE_VERSION QString("mod-v0.7.0-alpha")
 
@@ -284,9 +285,14 @@ void FastQSPWindow::loadGame(const QString& filename) {
     // New save/load system
     //  qspJack->loadGameStatus(filename);
     //  loadPage();
-    if (!filename.isEmpty() &&
-        QSPOpenSavedGame(filename.toStdWString().c_str(), true, ignoreCRCAction->isChecked())) {
-        loadPage();
+    if (!filename.isEmpty())
+    {
+        if (QSPOpenSavedGame(filename.toStdWString().c_str(), true, ignoreCRCAction->isChecked())) {
+            loadPage();
+        }
+        else {
+            displayLastError();
+        }
     }
 }
 
@@ -471,7 +477,9 @@ void FastQSPWindow::openFile(const QString& filename) {
     gameDirectory = QFileInfo(filename).absolutePath() + "/";
 
     if (!QSPLoadGameWorld(filename.toStdWString().c_str(), &gameDirectory))
+    {
         qCritical() << QString("Could not open file: ") << filename;
+    }
 
     requestHandlers.SetGamePath(gameDirectory);
 
@@ -521,6 +529,9 @@ void FastQSPWindow::openFile(const QString& filename) {
         }
         timer.restart();
     }
+    else {
+        displayLastError();
+    }
 }
 
 // That function is called by callback if isRefsresh == true
@@ -547,6 +558,28 @@ void FastQSPWindow::loadPage() {
     //webView->setHtml(html, QUrl("qsp:/"));
 
     //autosave();
+}
+
+void FastQSPWindow::displayLastError()
+{
+    QString errorMessage;
+    QSP_CHAR* loc;
+    int code, actIndex, line;
+    QSPGetLastErrorData(&code, &loc, &actIndex, &line);
+    QString desc = QString::fromWCharArray(QSPGetErrorDesc(code));
+    if (loc)
+        errorMessage = QString("Location: %1\nArea: %2\nLine: %3\nCode: %4\nDesc: %5")
+        .arg(QString::fromWCharArray(loc))
+        .arg(actIndex < 0 ? QString("on visit") : QString("on action"))
+        .arg(line)
+        .arg(code)
+        .arg(desc);
+    else
+        errorMessage = QString("Code: %1\nDesc: %2")
+        .arg(code)
+        .arg(desc);
+    QMessageBox dialog(QMessageBox::Critical, tr("Error"), errorMessage, QMessageBox::Ok);
+    dialog.exec();
 }
 
 // Ugly way of looping a video, but using a playlist
