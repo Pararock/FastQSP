@@ -41,6 +41,8 @@ QSP_CHAR *qspCurIncFiles[QSP_MAXINCFILES];
 int qspCurIncFilesCount = 0;
 int qspCurIncLocsCount = 0;
 
+int qspLastSaveLen = 2 * 1024;
+
 unsigned int qspCRCTable[256] = {
     0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F,
     0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E, 0x97D2D988,
@@ -354,7 +356,7 @@ int qspSaveGameStatusToString(QSP_CHAR **buf) {
   if (qspErrorNum)
     return 0;
 
-  std::vector<QSP_CHAR> *buff = new std::vector<QSP_CHAR>();
+  std::vector<QSP_CHAR> *buff = new std::vector<QSP_CHAR>(qspLastSaveLen);
   qspRefreshPlayList();
   locName = (qspCurLoc >= 0 ? qspLocs[qspCurLoc].Name : nullptr);
   len = qspCodeWriteVal2(buff, 0, QSP_SAVEDGAMEID, QSP_FALSE);
@@ -439,6 +441,9 @@ int qspSaveGameStatusToString(QSP_CHAR **buf) {
   if (qspErrorNum) {
     free(*buf);
     return 0;
+  }
+  if (len > qspLastSaveLen) {
+      qspLastSaveLen = len;
   }
   return len;
 }

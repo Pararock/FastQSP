@@ -25,7 +25,6 @@
 #include <QtDebug>
 #include <vector>
 
-// Что это за пиздец?! Кто так, блять, пишет? Теперь понятно, откуда тормоза. Срочно переписать.
 int qspAddText(QSP_CHAR **dest, const QSP_CHAR *val, int destLen, int valLen,
                QSP_BOOL isCreate) {
   int ret;
@@ -49,20 +48,20 @@ int qspAddText(QSP_CHAR **dest, const QSP_CHAR *val, int destLen, int valLen,
   return ret;
 }
 
-// новая версия. Что это костыль - похуй. Главно быстро работает.
+// a new version. What is a crutch - fuck. Mostly fast.
 int qspAddText2(std::vector<QSP_CHAR> *dest, const QSP_CHAR *val, int valLen, QSP_BOOL isCreate)
 {
     if (valLen < 0)
       valLen = qspStrLen(val);
     int destLen = dest->size()-1;
-    // Удаляем символ завершения строки
+    // Delete the line termination character
     if((!dest->empty()) && ((*dest)[destLen] == 0))
         dest->pop_back();
-    // Добавляем в конец
+    // Add to the end
     for(int k = 0; k < valLen; k++){
         dest->push_back(val[k]);
     }
-    // Добавляем символ завершения строки
+    // Add a line termination character
     dest->push_back(0);
     return dest->size()-1;
 }
@@ -284,7 +283,8 @@ QSP_CHAR *qspJoinStrs(QSP_CHAR **s, int count, QSP_CHAR *delim) {
   }
   return txt;
 }
-// последний параметр - предполагаемое число строк
+
+// the last parameter is the estimated number of rows
 int qspSplitStr(QSP_CHAR *str, const QSP_CHAR *delim, QSP_CHAR ***res, int strEval) {
   int allocChars, count = 0, bufSize = strEval, delimLen = qspStrLen(delim);
   QSP_CHAR *newStr, **ret, *curPos = str, *found = qspStrStr(str, delim);
