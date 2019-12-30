@@ -46,7 +46,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     //webView->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
     //webView->setAutoFillBackground(false);
 
-    videoPlayer = new QMediaPlayer();
+    videoPlayer = new QMediaPlayer(this);
     videoItem = new QGraphicsVideoItem();
     videoItem->setSize(QSize(gameWidth + 4, gameHeight + 4));
     videoItem->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
@@ -56,7 +56,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     scene->addItem(videoItem);
     videoItem->hide();
 
-    savestatus = new QGraphicsTextItem;
+    savestatus = new QGraphicsTextItem();
     savestatus->setDefaultTextColor(Qt::yellow);
     QFont f;
     f.setBold(true);
@@ -72,7 +72,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
 
     // Creating menu
     //-File menu--------------------------------------------------------
-    QMenu* fileMenu = new QMenu("File");
+    QMenu* fileMenu = new QMenu("File", this);
     fileMenu->addAction("Open file\tCtrl+O", this, SLOT(openFileDialog()));
     QShortcut* openFile = new QShortcut(QKeySequence("Ctrl+O"), this);
     connect(openFile, SIGNAL(activated()), SLOT(openFileDialog()));
@@ -90,7 +90,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     menuBar()->addMenu(fileMenu);
 
     //-Game menu--------------------------------------------------------
-    gameMenu = new QMenu("Game");
+    gameMenu = new QMenu("Game", this);
     gameMenu->addAction("Save\tCtrl+S", this, SLOT(saveGameDialog()));
     QShortcut* save = new QShortcut(QKeySequence("Ctrl+S"), this);
     connect(save, SIGNAL(activated()), SLOT(saveGameDialog()));
@@ -142,7 +142,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     gameMenu->setDisabled(true);
 
     //-Other menu-------------------------------------------------------
-    QMenu* otherMenu = new QMenu("Other");
+    QMenu* otherMenu = new QMenu("Other", this);
     otherMenu->addAction("Fullscreen\tAlt+Enter", this, SLOT(toggleFullscreen()));
     QShortcut* fullscreen =
         new QShortcut(QKeySequence(Qt::Key_Return + Qt::AltModifier), this);
@@ -158,7 +158,7 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     menuBar()->addMenu(otherMenu);
 
     //-Help menu--------------------------------------------------------
-    QMenu* helpMenu = new QMenu("Help");
+    QMenu* helpMenu = new QMenu("Help", this);
     helpMenu->addAction("About", this, SLOT(about()));
     menuBar()->addMenu(helpMenu);
     //------------------------------------------------------------------
@@ -219,7 +219,7 @@ void FastQSPWindow::toggleFullscreen() {
 }
 
 void FastQSPWindow::about() {
-    QTextEdit* about = new QTextEdit;
+    QTextEdit* about = new QTextEdit(this);
     about->setText(
         // "<h2 style =  \"margin-bottom:0px\">FastQSP player " % QCoreApplication::applicationVersion() %
         "<h2 style =  \"margin-bottom:0px\">FastQSP player " % ENGINE_VERSION %
@@ -232,6 +232,7 @@ void FastQSPWindow::about() {
         "<br>License: GPL v3</br></p>");
     about->setFixedSize(500, 175);
     about->setReadOnly(true);
+    about->setWindowModality(Qt::WindowModality::ApplicationModal);
     about->show();
 }
 
@@ -328,13 +329,11 @@ void FastQSPWindow::restartGame() {
 }
 
 void FastQSPWindow::showHtml() {
-    static QTextEdit* htmlText;
-    if (!htmlText)
-        htmlText = new QTextEdit();
     //htmlText->setPlainText(webView->page()->mainFrame()->toHtml());
-    QTextEdit* textEdit = new QTextEdit;
+    QTextEdit* textEdit = new QTextEdit(this);
     // *textEdit must remain valid until the lambda function is called.
     webView->page()->toHtml([textEdit](const QString& result) { textEdit->setPlainText(result); });
+    textEdit->setWindowModality(Qt::WindowModality::ApplicationModal);
     textEdit->show();
 }
 

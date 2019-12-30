@@ -4,6 +4,7 @@
 #include <QUrl>
 #include <QMimeType>
 #include <QFile>
+#include <QDebug>
 
 QspUrlSchemeHandler::QspUrlSchemeHandler(QObject* parent) : QWebEngineUrlSchemeHandler(parent)
 {
@@ -54,6 +55,9 @@ void QspUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob* request)
             if (file.open(QIODevice::ReadOnly))
             {
                 buffer->write(file.readAll());
+            }
+            else {
+                qDebug() << "Request URL: " << request->requestUrl().toString() << " not found";
             }
             buffer->close();
             file.close();
