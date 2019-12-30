@@ -43,5 +43,5 @@ void ExecUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob* request)
         //QSPCallBacks::RefreshInt(QSP_FALSE);
     }
 
-    request->redirect(QUrl("qsp:/"));
+    request->redirect(QUrl("qsp://qspgame.local/"));
 }

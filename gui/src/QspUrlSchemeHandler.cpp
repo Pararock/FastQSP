@@ -20,49 +20,56 @@ void QspUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob* request)
 
     buffer->open(QIODevice::WriteOnly);
     bool isFileRequest = true;
-    if (requestPath == "/")
-    {
-        // This is the path that send back the rendered Main Description in html
-        builder.clear();
-        buffer->write(builder.getHTML().toUtf8());
-        buffer->close();
-        request->reply("text/html", buffer);
-        isFileRequest = false;
-    }
-    else
-    {
-        // Here we get all other qsp:/ requests
-        QString cleanPath = QDir::cleanPath(requestPath.mid(1));
-
-        int index = cleanPath.indexOf("/");
-        if (index == -1) {
-            // No sub folder, check if it's an action click send in the qsp://{int} format
-            bool ok = false;
-            int actionNumber = cleanPath.toInt(&ok);
-            if (ok) {
-                QSPSetSelActionIndex(actionNumber - 1, true);
-                QSPExecuteSelActionCode(true);
-                buffer->close();
-                request->redirect(QUrl("qsp:/"));
-                isFileRequest = false;
-            }
-        }
-
-        if (isFileRequest) {
-            QString path = m_dir.absoluteFilePath(cleanPath);
-            QMimeType type = db.mimeTypeForFile(path);
-            QFile file(path);
-            if (file.open(QIODevice::ReadOnly))
-            {
-                buffer->write(file.readAll());
-            }
-            else {
-                qDebug() << "Request URL: " << request->requestUrl().toString() << " not found";
-            }
+    if (url.host() == "qspgame.local") {
+        if (requestPath == "/" || requestPath.isEmpty())
+        {
+            // This is the path that send back the rendered Main Description in html
+            builder.clear();
+            buffer->write(builder.getHTML().toUtf8());
             buffer->close();
-            file.close();
-            request->reply(type.name().toUtf8(), buffer);
+            request->reply("text/html", buffer);
+            isFileRequest = false;
         }
+        else
+        {
+            // Here we get all other qsp://qspgame.local requests
+            QString cleanPath = QDir::cleanPath(requestPath.mid(1));
+
+            int index = cleanPath.indexOf("/");
+            if (index == -1) {
+                // No sub folder, check if it's an action click send in the qsp://{int} format
+                bool ok = false;
+                int actionNumber = cleanPath.toInt(&ok);
+                if (ok) {
+                    QSPSetSelActionIndex(actionNumber - 1, true);
+                    QSPExecuteSelActionCode(true);
+                    buffer->close();
+                    request->redirect(QUrl("qsp://qspgame.local/"));
+                    isFileRequest = false;
+                }
+            }
+
+            if (isFileRequest) {
+                QString path = m_dir.absoluteFilePath(cleanPath);
+                QMimeType type = db.mimeTypeForFile(path);
+                QFile file(path);
+                if (file.open(QIODevice::ReadOnly))
+                {
+                    buffer->write(file.readAll());
+                    buffer->close();
+                    file.close();
+                    request->reply(type.name().toUtf8(), buffer);
+                }
+                else {
+                    qDebug() << "Request URL: " << request->requestUrl().toString() << " not found";
+                    request->fail(QWebEngineUrlRequestJob::Error::UrlNotFound);
+                }
+            }
+        }
+    }
+    else {
+        qDebug() << "Bad host: " << request->requestUrl().toString();
+        request->fail(QWebEngineUrlRequestJob::Error::UrlInvalid);
     }
 }
 

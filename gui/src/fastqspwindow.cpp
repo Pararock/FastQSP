@@ -4,7 +4,7 @@
 #include <QIcon>
 #include <QSettings>
 
-#define ENGINE_VERSION QString("mod-v0.6.0")
+#define ENGINE_VERSION QString("mod-v0.7.0-alpha")
 
 FastQSPWindow::FastQSPWindow(QWidget* parent)
     : QMainWindow(parent), gameWidth(800), gameHeight(600),
@@ -34,16 +34,13 @@ FastQSPWindow::FastQSPWindow(QWidget* parent)
     graphicsView->setFrameStyle(QFrame::NoFrame);
 
     requestHandlers.installUrlScheme();
-    webView = new QWebEngineView();
-    //webView->page()->setNetworkAccessManager(&netManager);
-    //webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    webView = new QWebEngineView();//graphicsView
     scene->addWidget(webView);
     scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
     //webView->setRenderHints(
     //    QPainter::Antialiasing | QPainter::HighQualityAntialiasing |
     //    QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform |
     //    QPainter::NonCosmeticDefaultPen);
-    //webView->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
     //webView->setAutoFillBackground(false);
 
     videoPlayer = new QMediaPlayer(this);
@@ -190,7 +187,10 @@ void FastQSPWindow::loadFonts() {
     }
 }
 
-FastQSPWindow::~FastQSPWindow() { QSPDeInit(); }
+FastQSPWindow::~FastQSPWindow() { 
+    delete webView;
+    QSPDeInit();
+}
 
 bool FastQSPWindow::eventFilter(QObject* /*obj*/, QEvent* e) {
     if (e->type() == QEvent::ContextMenu)
@@ -543,7 +543,7 @@ void FastQSPWindow::loadPage() {
     //if(newImage != "")
     //  html.replace(origImage, newImage);
 
-    webView->setUrl(QUrl("qsp:/"));
+    webView->setUrl(QUrl("qsp://qspgame.local/"));
     //webView->setHtml(html, QUrl("qsp:/"));
 
     //autosave();
@@ -686,7 +686,7 @@ void FastQSPWindow::prevScreen()
 void FastQSPWindow::gotoMainScreen()
 {
     if (qspJack.isGotoMainScreenAcceptable())
-        linkClicked(QUrl("EXEC: gt 'menu_form'"));
+        webView->setUrl(QUrl("EXEC: gt 'menu_form'"));
 }
 
 void FastQSPWindow::autosave() {
