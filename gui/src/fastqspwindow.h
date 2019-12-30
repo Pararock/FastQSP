@@ -4,7 +4,6 @@
 #include <qsp/default/qsp_default.h>
 #include <qsp/jack.h>
 #include "qsp_htmlbuilder.h"
-#include "local_requsts_proxy.h"
 
 #include <qglobal.h>
 #include <QApplication>
@@ -130,7 +129,6 @@ private:
 #endif
   QTime timer;
   QDir saveDir;
-  LocalRequestsProxy netManager;
   void loadFonts();
   void loadPage();
 };

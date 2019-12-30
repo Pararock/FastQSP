@@ -14,7 +14,6 @@ set(SOURCES
     src/qsp_callback.cpp
     src/fastqspwindow.cpp
     src/qsp_htmlbuilder.cpp
-    src/local_requsts_proxy.cpp
     src/audiostream.cpp
     src/url_schemes.cpp
     src/QspUrlSchemeHandler.cpp
@@ -26,7 +25,6 @@ set(HEADERS
     src/qsp_callback.h
     src/fastqspwindow.h
     src/qsp_htmlbuilder.h
-    src/local_requsts_proxy.h
     src/audiostream.h
     src/url_schemes.h
     src/QspUrlSchemeHandler.h

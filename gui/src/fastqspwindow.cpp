@@ -9,7 +9,7 @@
 FastQSPWindow::FastQSPWindow(QWidget* parent)
     : QMainWindow(parent), gameWidth(800), gameHeight(600),
     aspectRatio(qreal(gameWidth) / qreal(gameHeight)), scaleFactor(1),
-    gameIsOpen(false), netManager(),
+    gameIsOpen(false),
     settings("FastQSP.ini", QSettings::IniFormat)
     //settings (QSettings::IniFormat, QSettings::UserScope, "FastQSP", "config")
 {
@@ -471,14 +471,14 @@ void FastQSPWindow::openFile(const QString& filename) {
         autosave();
     gameDirectory = QFileInfo(filename).absolutePath() + "/";
 
-    requestHandlers.SetGamePath(gameDirectory);
-
     if (!QSPLoadGameWorld(filename.toStdWString().c_str(), &gameDirectory))
         qCritical() << QString("Could not open file: ") << filename;
+
+    requestHandlers.SetGamePath(gameDirectory);
+
     if (QSPRestartGame(QSP_TRUE)) {
         gameMenu->setEnabled(true);
-        //builder.setGameDir(gameDirectory);
-        netManager.setGameDirectory(gameDirectory);
+
         loadFonts();
         QFile configFile(gameDirectory + QLatin1String("config.xml"));
         if (configFile.open(QFile::ReadOnly)) {
