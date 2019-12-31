@@ -103,3 +103,6 @@ set_target_properties(qsp PROPERTIES
             IMPORTED_LOCATION "qsp.dll")
 
 install(TARGETS qsp DESTINATION bin/)
+
+# define tests
+add_subdirectory(test)
