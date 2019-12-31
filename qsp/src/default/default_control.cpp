@@ -34,6 +34,7 @@
 #include "../time_qsp.h"
 #include "../variables.h"
 #include "../variant.h"
+#include "../game.h"
 
 /* ------------------------------------------------------------ */
 QSP_BOOL QSPIsInCallBack() { return qspIsInCallBack; }
@@ -325,12 +326,17 @@ void QSPGetLastErrorData(int *errorNum, QSP_CHAR **errorLoc, int *errorActIndex,
 const QSP_CHAR *QSPGetErrorDesc(int errorNum) {
   return qspGetErrorDesc(errorNum);
 }
+
+QSP_EXTERN QSP_BOOL QSPLoadJsonData() {
+    //todo error checking
+    qspLoadJSON();
+    return false;
+}
 /* ------------------------------------------------------------ */
 /* Управление игрой */
 
 /* Загрузка новой игры из файла */
-QSP_BOOL QSPLoadGameWorld(const QSP_CHAR *fileName, QString *gameDirectory) {
-  qspGameDirectory = gameDirectory;
+QSP_BOOL QSPLoadGameWorld(const QSP_CHAR *fileName) {
   if (qspIsExitOnError && qspErrorNum)
     return QSP_FALSE;
   qspResetError();

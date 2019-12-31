@@ -444,7 +444,7 @@ void FastQSPWindow::openFile(const QString& filename) {
         autosave();
     gameDirectory = QFileInfo(filename).absolutePath() + "/";
 
-    if (!QSPLoadGameWorld(filename.toStdWString().c_str(), &gameDirectory))
+    if (!QSPLoadGameWorld(filename.toStdWString().c_str()))
     {
         qCritical() << QString("Could not open file: ") << filename;
     }
@@ -589,13 +589,13 @@ bool FastQSPWindow::choseRandomImageFromArray(QStringList urlmatches)
         QString stripped = img_src.replace(".gif", "");
         stripped = stripped.replace("content/pic/", "");
 
-        QList<QString> images = qspJack.getImageArrays(stripped);
-        if (!images.isEmpty())
-        {
-            int random = qrand() % images.count();
-            newImage = "content/pic/" + images.at(random) + ".gif";
-            return true;
-        }
+    //    QList<QString> images = nullptr// todo qspJack.getImageArrays(stripped);
+    //    if (!images.isEmpty())
+    //    {
+    //        int random = qrand() % images.count();
+    //        newImage = "content/pic/" + images.at(random) + ".gif";
+    //        return true;
+    //    }
     }
     newImage = "";
     return false;
@@ -663,12 +663,12 @@ void FastQSPWindow::hideSaveStatus()
 
 void FastQSPWindow::nextScreen()
 {
-    if (qspJack.qspCurrentObjectsCount() == 2)
+    if (QSPGetObjectsCount() == 2)
     {
         QSPSetSelObjectIndex(1, true);
         loadPage();
     }
-    else if (qspJack.qspCurrentObjectsCount() == 1) // Only forward button (next_day)
+    else if (QSPGetObjectsCount() == 1) // Only forward button (next_day)
     {
         QSPSetSelObjectIndex(0, true);
         loadPage();
@@ -677,16 +677,37 @@ void FastQSPWindow::nextScreen()
 
 void FastQSPWindow::prevScreen()
 {
-    if (qspJack.qspCurrentObjectsCount() == 2)
+    if (QSPGetObjectsCount() == 2)
     {
         QSPSetSelObjectIndex(0, true);
         loadPage();
     }
 }
 
+bool FastQSPWindow::isGotoMainScreenAcceptable()
+{
+    
+    QString curloc = QString::fromWCharArray(QSPGetCurLoc());
+    qDebug() << curloc;
+
+    QStringList no_escape{ "achtung",
+                           "main_menu",
+                           "demo_intro",
+                           "end_day_screen",
+                           "choice_screen" };
+
+    for (QString s : no_escape)
+        if (curloc == s)
+            return false;
+
+    //setNumericVariable("menu_form", 0);
+
+    return true;
+}
+
 void FastQSPWindow::gotoMainScreen()
 {
-    if (qspJack.isGotoMainScreenAcceptable())
+    if (isGotoMainScreenAcceptable())
         webView->setUrl(QUrl("EXEC: gt 'menu_form'"));
 }
 

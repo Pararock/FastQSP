@@ -22,7 +22,6 @@
 #include "mathops.h"
 #include "regexp.h"
 #include "text.h"
-#include <QDebug>
 
 QSPVar qspVars[QSP_VARSCOUNT];
 QSPVarsGroup *qspSavedVarsGroups = nullptr;

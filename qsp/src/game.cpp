@@ -29,8 +29,13 @@
 #include "text.h"
 #include "time.h"
 #include "variables.h"
-#include <QDebug>
-#include "qsp/jack.h"
+
+#include <string>
+#include <fstream>
+#include <filesystem>
+#include <nlohmann/json.hpp>
+#include <string_view>
+#include <range/v3/view/all.hpp>
 
 QSP_CHAR *qspQstPath = nullptr;
 int qspQstPathLen = 0;
@@ -158,6 +163,73 @@ static void qspOpenIncludes() {
   }
 }
 
+void qspLoadJSON() {
+    namespace fs = std::filesystem;
+    using namespace ranges;
+    //setStylesheet(); //Yeah not good place, I know.
+
+    //qspQstFullPath
+    const auto qspFile = fs::path(qspQstFullPath);
+    const auto parentPath = qspFile.parent_path();
+    const auto jsonBasePath = parentPath / L"json";
+    int total = 0;
+
+    for (auto& p : fs::recursive_directory_iterator(jsonBasePath))
+    {
+        if (p.is_regular_file() && p.path().extension() == ".json") {
+            //qDebug() << "std Found:" << *p.path().c_str();
+            std::ifstream i(p.path());
+
+            std::string str("Now is the time for all good men to come to the aid of their country.");
+            //auto rng = views::split(str, ' ');
+
+            //auto part = p.path().filename().wstring() | views::sp
+            //auto part = p.path().filename().wstring() | views::split('_') ;
+
+            bool ok = false;
+            //auto lolwut = part[0].toInt(&ok);
+            if (!ok) {
+                //qDebug() << "yea..." << total;
+            }
+            //auto part = p.path().baseName().split("_");
+            //iterateKeys(i, part[0].toInt());
+        }
+    }
+
+    //qDebug() << "Status: STD" << total;
+    total = 0;
+
+    //QDirIterator dir_iterator(QString::fromStdWString(jsonBasePath), QDirIterator::Subdirectories);
+
+    //while (dir_iterator.hasNext())
+    //{
+    //    dir_iterator.next();
+
+    //    QFileInfo file_info(dir_iterator.filePath());
+
+    //    if (file_info.isFile())
+    //    {
+    //        if (file_info.suffix() == "json")
+    //        {
+    //            //qDebug() << "qt  Found:" << dir_iterator.filePath();
+    //            total++;
+
+    //            QFile file(dir_iterator.filePath());
+    //            file.open(QIODevice::ReadOnly | QIODevice::Text);
+    //            QByteArray json_data = file.readAll();
+    //            file.close();
+
+    //            QJsonDocument doc = QJsonDocument::fromJson(json_data);
+
+
+
+    //            //iterateKeys(doc, part[0].toInt());
+    //        }
+    //    }
+    //}
+    //qDebug() << "Status QT:" << total;
+}
+
 void qspNewGame(QSP_BOOL isReset) {
   if (!qspLocsCount) {
     qspSetError(QSP_ERR_GAMENOTLOADED);
@@ -181,8 +253,8 @@ void qspNewGame(QSP_BOOL isReset) {
     qspCallSetTimer(QSP_DEFTIMERINTERVAL);
   }
   qspRefreshCurLoc(QSP_TRUE, nullptr, 0);
-  Jack& jack = Jack::getInstance();
-  jack.executeJSON();
+  auto result = QSPLoadJsonData();
+  //todo
 }
 
 static FILE *qspFileOpen(QSP_CHAR *fileName, QSP_CHAR *fileMode) {
@@ -709,6 +781,9 @@ void qspOpenGameStatusFromString(QSP_CHAR *str, unsigned int fileLen) {
   qspOpenIncludes();
   qspCurLoc = qspLocIndex(locName);
   free(locName);
+
+  qspLoadJSON();
+
   if (qspErrorNum)
     return;
   qspCallShowWindow(QSP_WIN_ACTS, qspCurIsShowActs);
@@ -726,8 +801,6 @@ void qspOpenGameStatusFromString(QSP_CHAR *str, unsigned int fileLen) {
   qspPlayPLFiles();
   qspCallSetTimer(qspTimerInterval);
   qspExecLocByVarNameWithArgs(QSP_FMT("ONGLOAD"), nullptr, 0);
-  Jack& jack = Jack::getInstance();
-  jack.executeJSON();
 }
 
 void qspOpenGameStatus(QSP_CHAR *fileName) {

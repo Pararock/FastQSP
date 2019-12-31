@@ -16,7 +16,6 @@
 */
 
 #include "declarations.h"
-#include <QString>
 
 #ifndef QSP_COMMONDEFINES
 #define QSP_COMMONDEFINES
@@ -36,7 +35,6 @@ extern QSP_BOOL qspIsMainDescChanged;
 extern QSP_BOOL qspIsVarsDescChanged;
 extern QSP_BOOL qspCurIsShowVars;
 extern QSP_BOOL qspCurIsShowInput;
-extern QString *qspGameDirectory;
 extern bool qspIgnoreCRC;
 
 /* External functions */

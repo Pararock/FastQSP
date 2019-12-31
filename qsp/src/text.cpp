@@ -22,7 +22,6 @@
 #include "mathops.h"
 #include "variables.h"
 #include "variant.h"
-#include <QtDebug>
 #include <vector>
 
 int qspAddText(QSP_CHAR **dest, const QSP_CHAR *val, int destLen, int valLen,

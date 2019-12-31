@@ -19,7 +19,6 @@
 #include "callbacks.h"
 #include "game.h"
 #include "text.h"
-#include <QDebug>
 
 QSP_CHAR *qspPLFiles[QSP_MAXPLFILES];
 int qspPLFilesCount = 0;

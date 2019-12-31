@@ -43,6 +43,7 @@ int qspSaveGameStatusToString(QSP_CHAR **);
 void qspSaveGameStatus(QSP_CHAR *);
 void qspOpenGameStatusFromString(QSP_CHAR *, unsigned int);
 void qspOpenGameStatus(QSP_CHAR *);
+void qspLoadJSON();
 /* Statements */
 QSP_BOOL qspStatementOpenQst(QSPVariant *, int, QSP_CHAR **, int);
 QSP_BOOL qspStatementOpenGame(QSPVariant *, int, QSP_CHAR **, int);

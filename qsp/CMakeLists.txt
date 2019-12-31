@@ -80,10 +80,13 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 add_library(FastQsp::qsp ALIAS ${PROJECT_NAME})
 
 find_package(oniguruma CONFIG REQUIRED)
-find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(nlohmann_json 3.2.0 REQUIRED)
+find_package(range-v3 CONFIG REQUIRED)
+target_link_libraries(qsp PRIVATE )
+target_compile_features(qsp PRIVATE cxx_std_17)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core
-                                      PRIVATE oniguruma::onig )
+target_link_libraries(${PROJECT_NAME} PRIVATE oniguruma::onig
+                                      PRIVATE nlohmann_json::nlohmann_json meta concepts range-v3)
 
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -93,5 +96,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
 )
+
+set_target_properties(qsp PROPERTIES
+            #INTERFACE_INCLUDE_DIRECTORIES "include"
+            IMPORTED_IMPLIB "qsp.lib"
+            IMPORTED_LOCATION "qsp.dll")
 
 install(TARGETS qsp DESTINATION bin/)

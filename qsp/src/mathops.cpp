@@ -27,9 +27,6 @@
 #include "text.h"
 #include "time.h"
 #include "variables.h"
-#include <QString>
-#include <QDebug>
-#include <QFile>
 
 #include <assert.h> 
 
@@ -895,12 +892,14 @@ QSPVariant qspExprValue(QSP_CHAR *expr) {
   QSP_CHAR *no_space_expr = qspSkipSpaces(expr);
   if(*no_space_expr == QSP_FILE_EXISTS)
   {
-      QString path = QString::fromWCharArray(expr).split('%')[1].simplified();
-      path = path.replace('\\', '/');
-      QFile file(*qspGameDirectory + path);
+      //auto possiblePathExpression = QString::fromWCharArray(expr).split('%')[1].simplified();
+      //QFile file(*qspGameDirectory + path);
+
+      // i have no idea what this hack is for
+      assert(false);
       QSPVariant res;
       res.IsStr = 0;
-      if(file.exists())
+      if(true)//file.exists())
           QSP_NUM(res) = 1;
       else
           QSP_NUM(res) = 0;

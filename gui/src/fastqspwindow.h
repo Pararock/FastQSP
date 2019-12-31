@@ -86,8 +86,6 @@ private slots:
   void gotoMainScreen();
 
 private:
-//  Jack *qspJack;
-  Jack& qspJack = Jack::getInstance();
   QMenu *gameMenu;
   QAction *autosaveAction;
   QAction *ignoreCRCAction;
@@ -120,6 +118,7 @@ private:
   QDir saveDir;
   void loadFonts();
   void loadPage();
+  bool isGotoMainScreenAcceptable();
   void displayLastError();
 };
 
