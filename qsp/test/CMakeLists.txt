@@ -2,23 +2,21 @@ find_package(GTest CONFIG REQUIRED)
 
 enable_testing()
 
-include_directories(${GTEST_INCLUDE_DIRS})
-
 add_executable(
     runUnitTests
-    #main.cpp
+    main.cpp
     game_tests.cpp
     )
 
 #/target_link_libraries(unit_tests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 target_link_libraries(
     runUnitTests 
-    GTest::gtest GTest::gtest_main #GTest::gmock GTest::gmock_main
+    GTest::gtest GTest::gmock GTest::gmock_main GTest::gtest_main 
     )
 
 target_link_libraries(runUnitTests qsp)
 target_compile_features(runUnitTests  PRIVATE cxx_std_17) 
-
+include_directories(${GTEST_INCLUDE_DIRS})
 IF (WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
     add_compile_definitions(_WIN)
@@ -37,4 +35,13 @@ add_compile_definitions(_UNICODE)
 
 #target_link_libraries(unit_tests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 
-add_test(NAME that-test-I-made COMMAND unit_tests)
+#add_test(NAME that-test-I-made COMMAND unit_tests)
+
+#add_custom_command(
+#        TARGET runUnitTests POST_BUILD
+#        COMMAND ${CMAKE_COMMAND} -E copy
+#                ${CMAKE_SOURCE_DIR}/assets
+#                ${CMAKE_CURRENT_BINARY_DIR}/assets)
+
+install(DIRECTORY "assets" 
+        DESTINATION "assets"  )

@@ -174,25 +174,28 @@ void qspLoadJSON() {
     const auto jsonBasePath = parentPath / L"json";
     int total = 0;
 
-    for (auto& p : fs::recursive_directory_iterator(jsonBasePath))
+    if (fs::exists(jsonBasePath) && fs::is_directory(jsonBasePath))
     {
-        if (p.is_regular_file() && p.path().extension() == ".json") {
-            //qDebug() << "std Found:" << *p.path().c_str();
-            std::ifstream i(p.path());
+        for (auto& p : fs::recursive_directory_iterator(jsonBasePath))
+        {
+            if (p.is_regular_file() && p.path().extension() == ".json") {
+                //qDebug() << "std Found:" << *p.path().c_str();
+                std::ifstream i(p.path());
 
-            std::string str("Now is the time for all good men to come to the aid of their country.");
-            //auto rng = views::split(str, ' ');
+                std::string str("Now is the time for all good men to come to the aid of their country.");
+                //auto rng = views::split(str, ' ');
 
-            //auto part = p.path().filename().wstring() | views::sp
-            //auto part = p.path().filename().wstring() | views::split('_') ;
+                //auto part = p.path().filename().wstring() | views::sp
+                //auto part = p.path().filename().wstring() | views::split('_') ;
 
-            bool ok = false;
-            //auto lolwut = part[0].toInt(&ok);
-            if (!ok) {
-                //qDebug() << "yea..." << total;
+                bool ok = false;
+                //auto lolwut = part[0].toInt(&ok);
+                if (!ok) {
+                    //qDebug() << "yea..." << total;
+                }
+                //auto part = p.path().baseName().split("_");
+                //iterateKeys(i, part[0].toInt());
             }
-            //auto part = p.path().baseName().split("_");
-            //iterateKeys(i, part[0].toInt());
         }
     }
 
