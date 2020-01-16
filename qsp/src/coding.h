@@ -38,7 +38,7 @@ int qspSplitGameStr(char *, QSP_BOOL, const QSP_CHAR*, char ***);
 int qspReCodeGetIntVal(QSP_CHAR *);
 int qspCodeWriteIntVal(QSP_CHAR **, int, int, QSP_BOOL);
 int qspCodeWriteVal(QSP_CHAR **, int, const QSP_CHAR*, QSP_BOOL);
-char *qspToSysString(QSP_CHAR *);
+char *qspToSysString(const QSP_CHAR *);
 
 int qspCodeWriteIntVal2(std::vector<QSP_CHAR> *s, int len, int val, QSP_BOOL isCode);
 int qspCodeWriteVal2(std::vector<QSP_CHAR> *s, int len, const QSP_CHAR *val, QSP_BOOL isCode);

@@ -136,7 +136,7 @@ char *qspW2C(QSP_CHAR *src) {
   return dst;
 }
 
-QSP_CHAR *qspC2W(char *src) {
+QSP_CHAR *qspC2W(const char *src) {
   int ret, ch;
   QSP_CHAR *dst = (QSP_CHAR *)malloc((strlen(src) + 1) * sizeof(QSP_CHAR));
   QSP_CHAR *s = dst;
@@ -148,6 +148,6 @@ QSP_CHAR *qspC2W(char *src) {
   return dst;
 }
 
-char *qspToSysString(QSP_CHAR *s) { return qspW2C(s); }
+char *qspToSysString(const QSP_CHAR *s) { return qspW2C(s); }
 
 #endif
