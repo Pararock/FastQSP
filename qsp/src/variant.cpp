@@ -22,7 +22,10 @@
 void qspFreeVariants(QSPVariant *args, int count) {
   while (--count >= 0)
     if (args[count].IsStr)
+    {
       free(QSP_STR(args[count]));
+      QSP_STR(args[count]) = nullptr;
+    }
 }
 
 QSPVariant qspGetEmptyVariant(QSP_BOOL isStringType) {
