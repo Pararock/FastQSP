@@ -75,14 +75,14 @@ ENDIF()
 
 add_compile_definitions(_UNICODE EXPORT)
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
+add_library(${PROJECT_NAME}  ${SOURCES} ${HEADERS})
 
 add_library(FastQsp::qsp ALIAS ${PROJECT_NAME})
 
 find_package(oniguruma CONFIG REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(range-v3 CONFIG REQUIRED)
-target_link_libraries(qsp PRIVATE )
+target_link_libraries(qsp )
 target_compile_features(qsp PRIVATE cxx_std_17)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE oniguruma::onig
@@ -93,16 +93,20 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     COMPILE_DEFINITIONS "${DEFINES}"
 )
 
-target_include_directories( ${PROJECT_NAME}
+target_include_directories(${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
 )
 
-set_target_properties(qsp PROPERTIES
+#set_target_properties(qsp PROPERTIES
             #INTERFACE_INCLUDE_DIRECTORIES "include"
-            IMPORTED_IMPLIB "qsp.lib"
-            IMPORTED_LOCATION "qsp.dll")
+#            IMPORTED_IMPLIB "qsp.lib"
+#            IMPORTED_LOCATION "qsp.dll")
 
 install(TARGETS qsp DESTINATION bin/)
 
-# define tests
-add_subdirectory(test)
+option(PACKAGE_TESTS "Build QSP Lib tests" ON)
+if(PACKAGE_TESTS)
+    enable_testing()
+    include(GoogleTest)
+    add_subdirectory(test)
+endif()
