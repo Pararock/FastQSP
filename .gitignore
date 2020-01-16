@@ -36,3 +36,5 @@ Makefile*
 
 # Cmake
 CMakeFiles
+out/
+CMakeSettings.json
