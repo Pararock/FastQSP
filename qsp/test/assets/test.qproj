@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QGen-project version="4.0.0 beta 1">
+  <Structure>
+    <Location name="start"/>
+    <Location name="Welcome"/>
+    <Location name="Text"/>
+    <Location name="SecondPage"/>
+    <Folder name="CONFIGURATION">
+      <Location name="$setupHTML"/>
+    </Folder>
+    <Folder name="GLOBALEVENTS">
+      <Location name="$onObjectAddedEvent"/>
+      <Location name="$onObjectDeletedEvent"/>
+      <Location name="$onObjectSelectedEvent"/>
+      <Location name="$onActionSelectedEvent"/>
+      <Location name="$onNewLocationEvent"/>
+      <Location name="$onGameSaveEvent"/>
+      <Location name="$onGameLoadEvent"/>
+    </Folder>
+    <Folder name="ITEMSEVENTS"/>
+  </Structure>
+</QGen-project>

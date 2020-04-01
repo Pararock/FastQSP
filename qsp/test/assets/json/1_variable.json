@@ -1,0 +1,8 @@
+{
+    "numberVariable": 1,
+    "stringVariable": "Hello",
+    "arrayVariable": [
+        "Hello1",
+        "Hello2"
+    ]
+}

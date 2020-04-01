@@ -35,7 +35,8 @@
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <string_view>
-#include <range/v3/view/all.hpp>
+#include <range/v3/all.hpp>
+#include <charconv>
 
 QSP_CHAR *qspQstPath = nullptr;
 int qspQstPathLen = 0;
@@ -182,12 +183,34 @@ void qspLoadJSON() {
                 //qDebug() << "std Found:" << *p.path().c_str();
                 std::ifstream i(p.path());
 
-                std::string str("Now is the time for all good men to come to the aid of their country.");
-                //auto rng = views::split(str, ' ');
+                auto path = p.path().filename().wstring();
 
-                //auto part = p.path().filename().wstring() | views::sp
+                //auto rngstr = views::split(path, '_');
+
+                auto part = path | views::split('_')
+                    | views::transform([](auto&& rng) {
+                        return std::wstring_view(&*rng.begin(), ranges::distance(rng));
+                    });
+
+                auto first = part.begin();
+                //auto firstrng = rngstr.begin();
+
+                int i3;
+                //auto result = std::from_chars(first.data(), first.data() + first.size(), i3);
+                //if (result.ec == std::errc::invalid_argument) {
+                //    i3 = 0;
+                //}
+
+                //auto number = std::stoi(first);
                 //auto part = p.path().filename().wstring() | views::split('_') ;
-
+                //auto view = p.path().filename().wstring()
+                //    | ranges::view::split('_')
+                //    | ranges::view::transform([](auto&& rng) {
+                //    return std::string_view(&*rng.begin(), ranges::distance(rng));
+                //});
+                std::wstring hello(L"hello");
+                //auto sv = views::split(hello, views::empty<char>);
+                //auto i2 = sv.begin();
                 bool ok = false;
                 //auto lolwut = part[0].toInt(&ok);
                 if (!ok) {
