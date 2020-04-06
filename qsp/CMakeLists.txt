@@ -82,15 +82,14 @@ add_library(${PROJECT_NAME}  ${SOURCES} ${HEADERS})
 add_library(FastQsp::qsp ALIAS ${PROJECT_NAME})
 
 find_package(oniguruma CONFIG REQUIRED)
-find_package(nlohmann_json 3.2.0 REQUIRED)
-find_package(range-v3 CONFIG REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 target_link_libraries(qsp )
 target_compile_features(qsp PRIVATE cxx_std_17)
 set_property(TARGET qsp PROPERTY CXX_STANDARD 20)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE oniguruma::onig
-                                      PRIVATE nlohmann_json::nlohmann_json range-v3)
+                                      PRIVATE nlohmann_json::nlohmann_json)
 
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

@@ -31,12 +31,13 @@
 #include "variables.h"
 
 #include <string>
+#include <iostream>
 #include <fstream>
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <string_view>
-#include <range/v3/all.hpp>
 #include <charconv>
+#include <string>
 
 QSP_CHAR *qspQstPath = nullptr;
 int qspQstPathLen = 0;
@@ -164,9 +165,188 @@ static void qspOpenIncludes() {
   }
 }
 
+//void Jack::iterateKeys(const std::ifstream& stream, int array_indice)
+//{
+    //QJsonObject obj = doc.object();
+
+    //for (QString key : obj.keys())
+    //{
+    //    if (obj.value(key).isString())
+    //    {
+    //        QString value = obj.value(key).toString();
+    //        if (array_indice == 0)
+    //        {
+    //            if (key.at(0) != '$')
+    //                key = "$" + key;
+    //            setStringVariable(key, value);
+    //        }
+    //        else
+    //            setStringVariable(key, array_indice, value);
+    //    }
+    //    else if (obj.value(key).isDouble() | obj.value(key).isBool())
+    //    {
+    //        int value = obj.value(key).toInt();
+    //        if (array_indice == 0)
+    //            setNumericVariable(key, value);
+    //        else
+    //            setNumericVariable(key, array_indice, value);
+    //    }
+    //    else if (obj.value(key).isArray())
+    //    {
+    //        QJsonArray img_array = obj[key].toArray();
+    //        QVariantList list = img_array.toVariantList();
+
+    //        //      if(image_arrays[list[0].toString()] == NULL)
+    //        //        image_arrays[list[0].toString()] = new QList<QString>;
+    //        //      else
+    //        image_arrays[list[0].toString()].clear();
+
+    //        for (int i = 0; i < list.size(); ++i)
+    //        {
+    //            if (i == 0)
+    //                setStringVariable(key, array_indice, list[0].toString());
+
+    //            image_arrays[list[0].toString()].append(list[i].toString());
+    //        }
+    //    }
+    //    else if (obj.value(key).isObject())
+    //    {
+    //        QJsonObject menu_item = obj[key].toObject();
+
+    //        for (QString key : menu_item.keys())
+    //            setStringVariable(key, 0, menu_item.value(key).toString());
+    //    }
+    //}
+//}
+
+//void Jack::setStringVariable(QString key, int array_indice, QString value)
+//{
+//    int name_length = key.length();
+//    int val_length = value.length();
+//
+//    QSP_CHAR* var_name = new QSP_CHAR[name_length + 1];
+//    QSP_CHAR* qsp_value = new QSP_CHAR[val_length + 1];
+//
+//    key.toWCharArray(var_name);
+//    value.toWCharArray(qsp_value);
+//
+//    var_name[name_length] = L'\0';
+//    qsp_value[val_length] = L'\0';
+//
+//    QSPVar* var = qspVarReference(var_name, QSP_TRUE); //True = create if not found (I think)
+//
+//    QSPVariant val = qspGetEmptyVariant(QSP_TRUE); //True = string type
+//    QSP_STR(val) = qsp_value;
+//
+//    //  qDebug() << "Key:" << key << "value:" << value << "indice:" << array_indice;
+//
+//    qspSetVarValueByReference(var, array_indice, &val);
+//
+//    delete[] var_name;
+//    delete[] qsp_value;
+//}
+
+void setNumericVariable(const std::string& key, int array_indice, int value)
+{
+    std::wstring key_string = std::wstring(key.begin(), key.end());
+
+    QSPVar* var = qspVarReference(key_string.c_str(), QSP_TRUE); //True = create if not found (I think)
+
+    QSPVariant val = qspGetEmptyVariant(QSP_FALSE); //False = not string type
+    QSP_NUM(val) = value;
+
+    //  qDebug() << "Key:" << key << "value:" << value << "indice:" << array_indice;
+
+    qspSetVarValueByReference(var, array_indice, &val);
+
+
+    //delete[] var_name;
+}
+
+void setStringVariable(const std::string& key, int array_indice, const std::string& value)
+{
+    int name_length = key.length();
+    int val_length = value.length();
+
+    QSP_CHAR* qsp_value = new QSP_CHAR[val_length + 1];
+
+    std::wstring key_string = std::wstring(key.begin(), key.end());
+    mbstowcs(qsp_value, value.c_str(), val_length);
+    
+    qsp_value[val_length] = L'\0';
+
+    QSPVar* var = qspVarReference(key_string.c_str(), QSP_TRUE); //True = create if not found (I think)
+    QSPVariant val = qspGetEmptyVariant(QSP_TRUE); //True = string type
+    QSP_STR(val) = qsp_value;
+    qspSetVarValueByReference(var, array_indice, &val);
+}
+
+void iterateKeys(const std::string& path, int array_indice)
+{
+    using json = nlohmann::json;
+    std::ifstream i(path);
+    json j;
+    try { 
+        i >> j;
+    }
+    catch (json::parse_error& e) {
+        // output exception information
+        std::cout << "message: " << e.what() << '\n'
+            << "exception id: " << e.id << '\n'
+            << "byte position of error: " << e.byte << std::endl;
+        //todo better error
+        return;
+    }
+    
+
+    // range-based for
+    for (auto& el : j.items()) {
+        //std::cout << el.key() << '\n';
+        //std::cout << el.value() << '\n';
+        if (el.value().is_string())
+        {
+            //todo
+            std::cout << el.key() << '\n';
+            assert(false);
+        }
+        else if (el.value().is_number() || el.value().is_boolean())
+        {
+            int value = el.value().get<int>();
+            setNumericVariable(el.key(), array_indice, value);
+            //std::cout << el.key() << '\n';
+            //assert(false);
+        }
+        else if (el.value().is_array())
+        {
+            std::cout << el.key() << '\n';
+            assert(false);
+            //QJsonArray img_array = obj[key].toArray();
+            //QVariantList list = img_array.toVariantList();
+
+            //      if(image_arrays[list[0].toString()] == NULL)
+            //        image_arrays[list[0].toString()] = new QList<QString>;
+            //      else
+            //image_arrays[list[0].toString()].clear();
+
+            //for (int i = 0; i < list.size(); ++i)
+            //{
+            //    if (i == 0)
+            //        setStringVariable(key, array_indice, list[0].toString());
+
+            //    image_arrays[list[0].toString()].append(list[i].toString());
+            //}
+        }
+        else if (el.value().is_object()) {
+            auto menu_item = el.value();
+            for (json::iterator it = menu_item.begin(); it != menu_item.end(); ++it) {
+                setStringVariable(it.key(), 0, it.value());
+            }
+        }
+    }
+}
+
 void qspLoadJSON() {
     namespace fs = std::filesystem;
-    using namespace ranges;
     //setStylesheet(); //Yeah not good place, I know.
 
     //qspQstFullPath
@@ -180,81 +360,27 @@ void qspLoadJSON() {
         for (auto& p : fs::recursive_directory_iterator(jsonBasePath))
         {
             if (p.is_regular_file() && p.path().extension() == ".json") {
-                //qDebug() << "std Found:" << *p.path().c_str();
-                std::ifstream i(p.path());
+                auto path = p.path().filename().string();
 
-                auto path = p.path().filename().wstring();
+                auto separatorPos = path.find_first_of('_');
 
-                //auto rngstr = views::split(path, '_');
-
-                auto part = path | views::split('_')
-                    | views::transform([](auto&& rng) {
-                        return std::wstring_view(&*rng.begin(), ranges::distance(rng));
-                    });
-
-                auto first = part.begin();
-                //auto firstrng = rngstr.begin();
-
-                int i3;
-                //auto result = std::from_chars(first.data(), first.data() + first.size(), i3);
-                //if (result.ec == std::errc::invalid_argument) {
-                //    i3 = 0;
-                //}
-
-                //auto number = std::stoi(first);
-                //auto part = p.path().filename().wstring() | views::split('_') ;
-                //auto view = p.path().filename().wstring()
-                //    | ranges::view::split('_')
-                //    | ranges::view::transform([](auto&& rng) {
-                //    return std::string_view(&*rng.begin(), ranges::distance(rng));
-                //});
-                std::wstring hello(L"hello");
-                //auto sv = views::split(hello, views::empty<char>);
-                //auto i2 = sv.begin();
-                bool ok = false;
-                //auto lolwut = part[0].toInt(&ok);
-                if (!ok) {
-                    //qDebug() << "yea..." << total;
+                if (separatorPos == std::string::npos)
+                {
+                    separatorPos = path.size();
                 }
-                //auto part = p.path().baseName().split("_");
-                //iterateKeys(i, part[0].toInt());
+
+                int arrayIndex;
+                auto result = std::from_chars(path.data(), path.data() + separatorPos, arrayIndex);
+                if (result.ec == std::errc::invalid_argument) {
+                    arrayIndex = 0;
+                }
+
+                iterateKeys(p.path().generic_string(), arrayIndex);
             }
         }
     }
-
-    //qDebug() << "Status: STD" << total;
-    total = 0;
-
-    //QDirIterator dir_iterator(QString::fromStdWString(jsonBasePath), QDirIterator::Subdirectories);
-
-    //while (dir_iterator.hasNext())
-    //{
-    //    dir_iterator.next();
-
-    //    QFileInfo file_info(dir_iterator.filePath());
-
-    //    if (file_info.isFile())
-    //    {
-    //        if (file_info.suffix() == "json")
-    //        {
-    //            //qDebug() << "qt  Found:" << dir_iterator.filePath();
-    //            total++;
-
-    //            QFile file(dir_iterator.filePath());
-    //            file.open(QIODevice::ReadOnly | QIODevice::Text);
-    //            QByteArray json_data = file.readAll();
-    //            file.close();
-
-    //            QJsonDocument doc = QJsonDocument::fromJson(json_data);
-
-
-
-    //            //iterateKeys(doc, part[0].toInt());
-    //        }
-    //    }
-    //}
-    //qDebug() << "Status QT:" << total;
 }
+
 
 void qspNewGame(QSP_BOOL isReset) {
   if (!qspLocsCount) {

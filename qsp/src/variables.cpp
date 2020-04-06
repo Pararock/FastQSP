@@ -297,24 +297,25 @@ void qspSetVar(QSP_CHAR *name, QSPVariant *val, QSP_CHAR op) {
 //  qDebug() << varname;
   QSPVariant oldVal;
   QSPVar *var;
+  QSP_BOOL isStringType = *name == QSP_STRCHAR[0];
   int index;
   if (!(var = qspGetVarData(name, QSP_TRUE, &index)))
     return;
   if (op == QSP_EQUAL[0]) {
-    if (qspConvertVariantTo(val, *name == QSP_STRCHAR[0])) {
+    if (qspConvertVariantTo(val, isStringType)) {
       qspSetError(QSP_ERR_TYPEMISMATCH);
       return;
     }
     qspSetVarValueByReference(var, index, val);
   } else if (op == QSP_ADD[0]) {
-    oldVal = qspGetVarValueByReference(var, index, *name == QSP_STRCHAR[0]);
+    oldVal = qspGetVarValueByReference(var, index, isStringType);
     if (oldVal.IsStr && val->IsStr)
       QSP_STR(oldVal) = qspGetAddText(QSP_STR(oldVal), QSP_PSTR(val), -1, -1);
     else if (qspIsCanConvertToNum(&oldVal) && qspIsCanConvertToNum(val)) {
       qspConvertVariantTo(&oldVal, QSP_FALSE);
       qspConvertVariantTo(val, QSP_FALSE);
       QSP_NUM(oldVal) += QSP_PNUM(val);
-      qspConvertVariantTo(&oldVal, *name == QSP_STRCHAR[0]);
+      qspConvertVariantTo(&oldVal, isStringType);
     } else {
       if (!oldVal.IsStr) {
         qspSetError(QSP_ERR_TYPEMISMATCH);
@@ -331,7 +332,7 @@ void qspSetVar(QSP_CHAR *name, QSPVariant *val, QSP_CHAR op) {
       qspSetError(QSP_ERR_TYPEMISMATCH);
       return;
     }
-    oldVal = qspGetVarValueByReference(var, index, *name == QSP_STRCHAR[0]);
+    oldVal = qspGetVarValueByReference(var, index, isStringType);
     if (qspConvertVariantTo(&oldVal, QSP_FALSE)) {
       qspSetError(QSP_ERR_TYPEMISMATCH);
       free(QSP_STR(oldVal));
@@ -347,7 +348,7 @@ void qspSetVar(QSP_CHAR *name, QSPVariant *val, QSP_CHAR op) {
       QSP_NUM(oldVal) /= QSP_PNUM(val);
     } else
       QSP_NUM(oldVal) *= QSP_PNUM(val);
-    qspConvertVariantTo(&oldVal, *name == QSP_STRCHAR[0]);
+    qspConvertVariantTo(&oldVal, isStringType);
     qspSetVarValueByReference(var, index, &oldVal);
     if (oldVal.IsStr)
       free(QSP_STR(oldVal));

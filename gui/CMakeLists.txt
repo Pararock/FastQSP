@@ -9,6 +9,7 @@ endif()
 
 
 project(FastQsp CXX)
+set_property(TARGET qsp PROPERTY CXX_STANDARD 20)
 set(SOURCES
     src/main.cpp
     src/qsp_callback.cpp
@@ -73,6 +74,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
-target_link_libraries(FastQsp qsp Qt5::Core Qt5::WebEngineCore Qt5::Network Qt5::Widgets  Qt5::Multimedia Qt5::MultimediaWidgets Qt5::WebEngine Qt5::WebEngineWidgets) #Qt5::Gui)
+target_link_libraries(FastQsp qsp  Qt5::Core Qt5::WebEngineCore Qt5::Network Qt5::Widgets  Qt5::Multimedia Qt5::MultimediaWidgets Qt5::WebEngine Qt5::WebEngineWidgets) #Qt5::Gui)
 
 install(TARGETS FastQsp DESTINATION bin/)

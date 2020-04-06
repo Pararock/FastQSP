@@ -24,5 +24,5 @@ if(GIT_FOUND)
 endif(GIT_FOUND)
 
 add_subdirectory(qsp)
-# add_subdirectory(gui)
+add_subdirectory(gui)
 
