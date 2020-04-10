@@ -415,35 +415,44 @@ TEST_F(BasicGameTest, variables)
             else if (wcscmp(L"ARRAYVARIABLE", name) == 0)
             {
                 EXPECT_TRUE(QSPGetVarValuesCount(L"ARRAYVARIABLE", &variableCount)) << L"We expected ARRAYVARIABLE to exist from json file";
-                EXPECT_EQ(2, variableCount) << L"ARRAYVARIABLE should empty";
+                EXPECT_EQ(3, variableCount) << L"ARRAYVARIABLE should empty";
 
                 EXPECT_TRUE(QSPGetVarValues(L"ARRAYVARIABLE", 0, &varIntValue, &varString)) << L"ARRAYVARIABLE variable should be redeable from json file";
                 EXPECT_STREQ(L"0_variable_index_0", varString) << L"expected ARRAYVARIABLE[0] variable to hold the right location name";
 
                 EXPECT_TRUE(QSPGetVarValues(L"ARRAYVARIABLE", 1, &varIntValue, &varString)) << L"ARRAYVARIABLE variable should be redeable from json file";
                 EXPECT_STREQ(L"1_variable_index_0", varString) << L"expected ARRAYVARIABLE[1] variable to hold the right location name";
+
+                EXPECT_TRUE(QSPGetVarValues(L"ARRAYVARIABLE", 2, &varIntValue, &varString)) << L"ARRAYVARIABLE variable should be redeable from json file";
+                EXPECT_STREQ(L"2_variable_index_0", varString) << L"expected ARRAYVARIABLE[2] variable to hold the right location name";
             }
             else if (wcscmp(L"STRINGVARIABLE", name) == 0)
             {
                 EXPECT_TRUE(QSPGetVarValuesCount(L"STRINGVARIABLE", &variableCount)) << L"We expected STRINGVARIABLE to exist";
-                EXPECT_EQ(2, variableCount) << L"STRINGVARIABLE should not be empty";
+                EXPECT_EQ(3, variableCount) << L"STRINGVARIABLE should not be empty";
 
                 EXPECT_TRUE(QSPGetVarValues(L"STRINGVARIABLE", 0, &varIntValue, &varString)) << L"STRINGVARIABLE variable should be redeable from json file";
                 EXPECT_STREQ(L"Hello from 0_variable", varString) << L"expected STRINGVARIABLE[0] variable to hold the right location name";
 
                 EXPECT_TRUE(QSPGetVarValues(L"STRINGVARIABLE", 1, &varIntValue, &varString)) << L"STRINGVARIABLE variable should be redeable from json file";
                 EXPECT_STREQ(L"Hello from 1_variable", varString) << L"expected STRINGVARIABLE[1] variable to hold the right location name";
+
+                EXPECT_TRUE(QSPGetVarValues(L"STRINGVARIABLE", 2, &varIntValue, &varString)) << L"STRINGVARIABLE variable should be redeable from json file";
+                EXPECT_STREQ(L"Hello from 2", varString) << L"expected STRINGVARIABLE[2] variable to hold the right location name";
             }
             else if (wcscmp(L"NUMBERVARIABLE", name) == 0)
             {
                 EXPECT_TRUE(QSPGetVarValuesCount(L"NUMBERVARIABLE", &variableCount)) << L"We expected NUMBERVARIABLE to exist";
-                EXPECT_EQ(2, variableCount) << L"NUMBERVARIABLE should not be empty";
+                EXPECT_EQ(3, variableCount) << L"NUMBERVARIABLE should not be empty";
 
-                EXPECT_TRUE(QSPGetVarValues(L"NUMBERVARIABLE", 0, &varIntValue, &varString)) << L"ONNEWLOC variable should be redeable";
+                EXPECT_TRUE(QSPGetVarValues(L"NUMBERVARIABLE", 0, &varIntValue, &varString)) << L"NUMBERVARIABLE variable should be redeable";
                 EXPECT_EQ(100, varIntValue) << L"int value should be from the json";
 
-                EXPECT_TRUE(QSPGetVarValues(L"NUMBERVARIABLE", 1, &varIntValue, &varString)) << L"ONNEWLOC variable should be redeable";
+                EXPECT_TRUE(QSPGetVarValues(L"NUMBERVARIABLE", 1, &varIntValue, &varString)) << L"NUMBERVARIABLE variable should be redeable";
                 EXPECT_EQ(101, varIntValue) << L"int value should be from the json";
+
+                EXPECT_TRUE(QSPGetVarValues(L"NUMBERVARIABLE", 2, &varIntValue, &varString)) << L"NUMBERVARIABLE variable should be redeable";
+                EXPECT_EQ(102, varIntValue) << L"int value should be from the json";
             }
             else if (wcscmp(L"MENU_ITEM_0", name) == 0)
             {
