@@ -165,87 +165,6 @@ static void qspOpenIncludes() {
   }
 }
 
-//void Jack::iterateKeys(const std::ifstream& stream, int array_indice)
-//{
-    //QJsonObject obj = doc.object();
-
-    //for (QString key : obj.keys())
-    //{
-    //    if (obj.value(key).isString())
-    //    {
-    //        QString value = obj.value(key).toString();
-    //        if (array_indice == 0)
-    //        {
-    //            if (key.at(0) != '$')
-    //                key = "$" + key;
-    //            setStringVariable(key, value);
-    //        }
-    //        else
-    //            setStringVariable(key, array_indice, value);
-    //    }
-    //    else if (obj.value(key).isDouble() | obj.value(key).isBool())
-    //    {
-    //        int value = obj.value(key).toInt();
-    //        if (array_indice == 0)
-    //            setNumericVariable(key, value);
-    //        else
-    //            setNumericVariable(key, array_indice, value);
-    //    }
-    //    else if (obj.value(key).isArray())
-    //    {
-    //        QJsonArray img_array = obj[key].toArray();
-    //        QVariantList list = img_array.toVariantList();
-
-    //        //      if(image_arrays[list[0].toString()] == NULL)
-    //        //        image_arrays[list[0].toString()] = new QList<QString>;
-    //        //      else
-    //        image_arrays[list[0].toString()].clear();
-
-    //        for (int i = 0; i < list.size(); ++i)
-    //        {
-    //            if (i == 0)
-    //                setStringVariable(key, array_indice, list[0].toString());
-
-    //            image_arrays[list[0].toString()].append(list[i].toString());
-    //        }
-    //    }
-    //    else if (obj.value(key).isObject())
-    //    {
-    //        QJsonObject menu_item = obj[key].toObject();
-
-    //        for (QString key : menu_item.keys())
-    //            setStringVariable(key, 0, menu_item.value(key).toString());
-    //    }
-    //}
-//}
-
-//void Jack::setStringVariable(QString key, int array_indice, QString value)
-//{
-//    int name_length = key.length();
-//    int val_length = value.length();
-//
-//    QSP_CHAR* var_name = new QSP_CHAR[name_length + 1];
-//    QSP_CHAR* qsp_value = new QSP_CHAR[val_length + 1];
-//
-//    key.toWCharArray(var_name);
-//    value.toWCharArray(qsp_value);
-//
-//    var_name[name_length] = L'\0';
-//    qsp_value[val_length] = L'\0';
-//
-//    QSPVar* var = qspVarReference(var_name, QSP_TRUE); //True = create if not found (I think)
-//
-//    QSPVariant val = qspGetEmptyVariant(QSP_TRUE); //True = string type
-//    QSP_STR(val) = qsp_value;
-//
-//    //  qDebug() << "Key:" << key << "value:" << value << "indice:" << array_indice;
-//
-//    qspSetVarValueByReference(var, array_indice, &val);
-//
-//    delete[] var_name;
-//    delete[] qsp_value;
-//}
-
 void setNumericVariable(const std::string& key, int array_indice, int value)
 {
     std::wstring key_string = std::wstring(key.begin(), key.end());
@@ -314,29 +233,6 @@ void iterateKeys(const std::string& path, int array_indice)
             //for (auto& [key, value] : array_item.items()) {
                 //std::cout << key << " : " << value << "\n";
               //  setStringVariable(el.key(), array_indice, value);
-            //}
-
-
-            //for (json::iterator it = menu_item.begin(); it != menu_item.end(); ++it) {
-                //std::cout << "array: " << el.key() << "\t value: " << it.value() << "\n";
-                //setStringVariable(it.key(), 0, it.value());
-            //}
-            //std::cout << "array: " << el.key() << "\n";
-            //assert(false);
-            //QJsonArray img_array = obj[key].toArray();
-            //QVariantList list = img_array.toVariantList();
-
-            //      if(image_arrays[list[0].toString()] == NULL)
-            //        image_arrays[list[0].toString()] = new QList<QString>;
-            //      else
-            //image_arrays[list[0].toString()].clear();
-
-            //for (int i = 0; i < list.size(); ++i)
-            //{
-            //    if (i == 0)
-            //        setStringVariable(key, array_indice, list[0].toString());
-
-            //    image_arrays[list[0].toString()].append(list[i].toString());
             //}
         }
         else if (el.value().is_object()) {
