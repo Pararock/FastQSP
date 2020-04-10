@@ -226,7 +226,7 @@ void iterateKeys(const std::string& path, int array_indice)
         {
             auto array_item = el.value();
 
-            auto& [key, value] = array_item.items().begin();
+            const auto& [key, value] = array_item.items().begin();
             setStringVariable(el.key(), array_indice, value);
 
             //find a way to support real array
