@@ -445,6 +445,30 @@ TEST_F(BasicGameTest, variables)
                 EXPECT_TRUE(QSPGetVarValues(L"NUMBERVARIABLE", 1, &varIntValue, &varString)) << L"ONNEWLOC variable should be redeable";
                 EXPECT_EQ(101, varIntValue) << L"int value should be from the json";
             }
+            else if (wcscmp(L"MENU_ITEM_0", name) == 0)
+            {
+                EXPECT_TRUE(QSPGetVarValuesCount(L"MENU_ITEM_0", &variableCount)) << L"We expected MENU_ITEM_0 to exist";
+                EXPECT_EQ(1, variableCount) << L"MENU_ITEM_0 should not be empty";
+
+                EXPECT_TRUE(QSPGetVarValues(L"MENU_ITEM_0", 0, &varIntValue, &varString)) << L"MENU_ITEM_0 variable should be redeable";
+                EXPECT_STREQ(L"Value of menu item 0", varString) << L"expected STRINGVARIABLE[1] variable to hold the right location name";
+            }
+            else if (wcscmp(L"MENU_ITEM_1", name) == 0)
+            {
+                EXPECT_TRUE(QSPGetVarValuesCount(L"MENU_ITEM_1", &variableCount)) << L"We expected MENU_ITEM_1 to exist";
+                EXPECT_EQ(1, variableCount) << L"MENU_ITEM_1 should not be empty";
+
+                EXPECT_TRUE(QSPGetVarValues(L"MENU_ITEM_1", 0, &varIntValue, &varString)) << L"MENU_ITEM_1 variable should be redeable";
+                EXPECT_STREQ(L"Value of menu item 1", varString) << L"expected STRINGVARIABLE[1] variable to hold the right location name";
+            }
+            else if (wcscmp(L"MENU_ITEM_2", name) == 0)
+            {
+                EXPECT_TRUE(QSPGetVarValuesCount(L"MENU_ITEM_2", &variableCount)) << L"We expected MENU_ITEM_2 to exist";
+                EXPECT_EQ(1, variableCount) << L"MENU_ITEM_2 should not be empty";
+
+                EXPECT_TRUE(QSPGetVarValues(L"MENU_ITEM_2", 0, &varIntValue, &varString)) << L"MENU_ITEM_2 variable should be redeable";
+                EXPECT_STREQ(L"Value of menu item 2", varString) << L"expected STRINGVARIABLE[1] variable to hold the right location name";
+            }
             else
             {
                 EXPECT_FALSE(result) << name << L" is set, but no other variable was expected";
