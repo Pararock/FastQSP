@@ -1,8 +1,8 @@
 {
-    "numberVariable": 1,
-    "stringVariable": "Hello",
+    "numberVariable": 101,
+    "stringVariable": "Hello from 1_variable",
     "arrayVariable": [
-        "Hello1",
-        "Hello2"
+        "1_variable_index_0",
+        "1_variable_index_1"
     ]
 }

@@ -255,12 +255,7 @@ void setNumericVariable(const std::string& key, int array_indice, int value)
     QSPVariant val = qspGetEmptyVariant(QSP_FALSE); //False = not string type
     QSP_NUM(val) = value;
 
-    //  qDebug() << "Key:" << key << "value:" << value << "indice:" << array_indice;
-
     qspSetVarValueByReference(var, array_indice, &val);
-
-
-    //delete[] var_name;
 }
 
 void setStringVariable(const std::string& key, int array_indice, const std::string& value)
@@ -298,28 +293,36 @@ void iterateKeys(const std::string& path, int array_indice)
         return;
     }
     
-
-    // range-based for
     for (auto& el : j.items()) {
-        //std::cout << el.key() << '\n';
-        //std::cout << el.value() << '\n';
         if (el.value().is_string())
         {
-            //todo
-            std::cout << el.key() << '\n';
-            assert(false);
+            setStringVariable(el.key(), array_indice, el.value());
         }
         else if (el.value().is_number() || el.value().is_boolean())
         {
             int value = el.value().get<int>();
             setNumericVariable(el.key(), array_indice, value);
-            //std::cout << el.key() << '\n';
-            //assert(false);
         }
         else if (el.value().is_array())
         {
-            std::cout << el.key() << '\n';
-            assert(false);
+            auto array_item = el.value();
+
+            auto& [key, value] = array_item.items().begin();
+            setStringVariable(el.key(), array_indice, value);
+
+            //find a way to support real array
+            //for (auto& [key, value] : array_item.items()) {
+                //std::cout << key << " : " << value << "\n";
+              //  setStringVariable(el.key(), array_indice, value);
+            //}
+
+
+            //for (json::iterator it = menu_item.begin(); it != menu_item.end(); ++it) {
+                //std::cout << "array: " << el.key() << "\t value: " << it.value() << "\n";
+                //setStringVariable(it.key(), 0, it.value());
+            //}
+            //std::cout << "array: " << el.key() << "\n";
+            //assert(false);
             //QJsonArray img_array = obj[key].toArray();
             //QVariantList list = img_array.toVariantList();
 
