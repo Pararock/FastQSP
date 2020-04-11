@@ -213,7 +213,7 @@ void iterateKeys(const std::string& path, int array_indice)
         return;
     }
     
-    for (auto& el : j.items()) {
+    for (const auto& el : j.items()) {
         if (el.value().is_string())
         {
             setStringVariable(el.key(), array_indice, el.value());
@@ -225,7 +225,7 @@ void iterateKeys(const std::string& path, int array_indice)
         }
         else if (el.value().is_array())
         {
-            auto array_item = el.value();
+            const auto array_item = el.value();
 
             const auto& [key, value] = array_item.items().begin();
             setStringVariable(el.key(), array_indice, value);
