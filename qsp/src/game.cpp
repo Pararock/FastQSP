@@ -30,7 +30,8 @@
 #include "time.h"
 #include "variables.h"
 
-#include <string>
+#include <sstream>
+#include <codecvt>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -244,13 +245,27 @@ void iterateKeys(const std::string& path, int array_indice)
     }
 }
 
+void setStylesheet(const std::filesystem::path& stylesheetfile)
+{
+    namespace fs = std::filesystem;
+    if (fs::exists(stylesheetfile))
+    {
+        std::ifstream ifs(stylesheetfile.generic_string());
+        std::string content((std::istreambuf_iterator<char>(ifs)),
+            (std::istreambuf_iterator<char>()));
+        setStringVariable("STYLESHEET", 0, content);
+    }
+}
+
 void qspLoadJSON() {
     namespace fs = std::filesystem;
-    //setStylesheet(); //Yeah not good place, I know.
 
-    //qspQstFullPath
     const auto qspFile = fs::path(qspQstFullPath);
     const auto parentPath = qspFile.parent_path();
+
+    setStylesheet(parentPath / L"content/stylesheet.css"); //Yeah not good place, I know.
+
+
     const auto jsonBasePath = parentPath / L"json";
     int total = 0;
 
