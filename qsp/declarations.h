@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <locale.h>
-#include <time_qsp.h>
+
 #include <limits.h>
 #include <string.h>
 #include <wchar.h>
@@ -27,6 +27,7 @@
 
 #include "bindings/bindings_config.h"
 #include "qsp.h"
+#include "time_qsp.h"
 
 #ifndef QSP_DEFINES
 #define QSP_DEFINES

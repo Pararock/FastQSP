@@ -11,6 +11,11 @@
 *.dylib
 build
 
+.vs/
+.vscode/
+CMakeFiles/
+out/
+
 # Visual studio file
 *.sln
 *.vcxproj
